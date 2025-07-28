@@ -1,0 +1,6 @@
+PyMuPDF
+python-docx
+langchain-groq
+langchain
+fastapi
+black
