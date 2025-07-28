@@ -112,8 +112,13 @@ def main(file_path: str) -> Dict[str, Any]:
     except Exception as e:
         return {"error": f"An error occurred: {str(e)}"}
 
-
-result = main(file_path=r"C:\Users\miztu\Downloads\inkin.pdf")
-RFEBOT.finalAgent(result)
-
+import time
+start = time.time()
+# result = main(file_path=r"C:\Users\miztu\Downloads\inkin.pdf")
+petition_content: str = petitionLoaders.extract_text_from_file(file_path=r"C:\Users\miztu\Downloads\inkin.pdf")
+result2 = RFEBOT.Agentprompt(petition_content)
+# RFEBOT.finalAgent(result)
+end = time.time()
+print(f"the analysis took approximately {end - start}secs to complete!")
 # print(result)
+print(result2)
