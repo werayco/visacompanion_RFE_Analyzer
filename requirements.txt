@@ -1,6 +1,11 @@
 PyMuPDF
 python-docx
+python-dotenv
+python-multipart
+langchain-anthropic
 langchain-groq
 langchain
-fastapi
+pyfiglet
 black
+uvicorn
+fastapi # for serving the agents

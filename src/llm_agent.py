@@ -1,3 +1,4 @@
+from docx import Document
 from langchain.output_parsers import ResponseSchema, StructuredOutputParser
 from langchain_groq import ChatGroq
 import re
@@ -5,34 +6,42 @@ import os
 import json
 from typing import Dict
 from langchain_anthropic import ChatAnthropic
+import time
 from dotenv import load_dotenv
 
 load_dotenv()
 
-groq_api_key = os.getenv("GROQ_API_KEY")
+# groq_api_key = os.getenv("GROQ_API_KEY")
 claude_api_key = os.getenv("CLAUDE_API_KEY")
+agent_temp = os.getenv("AGENT_TEMP")
 
-if not groq_api_key and not claude_api_key:
-    raise ValueError("Kindly add your groq api key")
+if not claude_api_key :
+    raise ValueError("Kindly make sure your claude api keys are present in the .env file.")
+
+# if not groq_api_key:
+#     raise ValueError("Kindly make sure your gorq api keys are present in the .env file.")
+
+if not agent_temp:
+    raise ValueError("Kindly make sure your agent temperature are present in the .env file.")
 
 
-def llm(question: str, model: str = "deepseek-r1-distill-llama-70b") -> str:
-    '''groq llm'''
-    try:
-        chat = ChatGroq(model=model, api_key=groq_api_key, temperature=0.1)
-        response = chat.invoke(question)
-        if response:
-            return response.content
-    except Exception as e:
-        return f"An error occurred: {e}"
+# def llm(question: str, model: str = "deepseek-r1-distill-llama-70b") -> str:
+#     """groq llm"""
+#     try:
+#         chat = ChatGroq(model=model, api_key=groq_api_key, temperature=0.1)
+#         response = chat.invoke(question)
+#         if response:
+#             return response.content
+#     except Exception as e:
+#         return f"An error occurred: {e}"
 
 
 def llm2(question: str):
-    '''claude's llm'''
+    """claude's llm"""
     try:
         llm2 = ChatAnthropic(
             model="claude-3-opus-20240229",
-            temperature=0.2,
+            temperature=agent_temp,
             api_key=claude_api_key,
         )
         response = llm2.invoke(question)
@@ -75,7 +84,7 @@ class RFEBOT:
         except Exception as e:
             pass
         return {"status": "couldn't parse the content"}
-
+    
     @staticmethod
     def Agentprompt(petitionContent: str) -> Dict:
         prompt1: str = f"""You are a USCIS Officer assigned to critically review an EB-1A petition. Your task is to extract the following components from the petition content:
@@ -93,24 +102,24 @@ class RFEBOT:
         Carefully evaluate the petition for any signs that could weaken the credibility or strength of the evidence provided. Flag any of the following:
 
         4. Repetitive or Boilerplate Language  
-        - Identical or overly similar wording across multiple recommendation letters  
-        - Copy-pasted templates with minimal personalization or field-specific insight
+         Identical or overly similar wording across multiple recommendation letters  
+         Copy-pasted templates with minimal personalization or field-specific insight
 
         5. Generic or Vague Contribution Claims  
-        - Statements like "significant impact" or "major innovation" without detailed explanation, technical depth, or third-party validation  
-        - Lack of specificity about the petitioner's unique role or achievements
+         Statements like "significant impact" or "major innovation" without detailed explanation, technical depth, or third-party validation  
+         Lack of specificity about the petitioner's unique role or achievements
 
         6. Insufficient Supporting Evidence  
-        - Claims made without verifiable documentation (e.g., links, data, press mentions, awards, citations)  
-        - No corroborating metrics (e.g., usage stats, revenue, adoption, expert testimonials)
+         Claims made without verifiable documentation (e.g., links, data, press mentions, awards, citations)  
+         No corroborating metrics (e.g., usage stats, revenue, adoption, expert testimonials)
 
         7. Unverified or Unremarkable Salary Information  
-        - Salary claims without comparative benchmarks or third-party validation (e.g., industry averages, country-specific data)  
-        - High earnings not contextualized within the petitioner's field or region
+         Salary claims without comparative benchmarks or third-party validation (e.g., industry averages, country-specific data)  
+         High earnings not contextualized within the petitioner's field or region
 
         8. Inconsistent or Broad Field of Expertise  
-        - Evidence presented across unrelated or loosely connected domains (e.g., AI + graphic design + biology)  
-        - Lack of a clear, focused field that aligns with the claimed extraordinary ability
+         Evidence presented across unrelated or loosely connected domains (e.g., AI + graphic design + biology)  
+         Lack of a clear, focused field that aligns with the claimed extraordinary ability
 
         Below is the Petition Content:  
         <petitionContent>  
@@ -127,30 +136,36 @@ class RFEBOT:
                 "generic_claims": "...",
                 "weak_substantiation": "...",
                 "unsupported_salary": "...",
-                "inconsistent_field": "..."
+                "inconsistent_field": "...",
+                "lack_of_independent_third_party_evidence": "..."
             }}
         }}
         """
-        prompt2: str = f"""You are a USCIS Officer assigned to critically review an EB-1A petition. Your task is to extract evidence supporting each EB-1A criterion from the petition content.
+        prompt2: str = f"""You are an expert immigration attorney assistant specializing in EB-1A (Extraordinary Ability) petitions. Your task is to carefully analyze the provided EB-1A petition document and extract specific evidence that corresponds to each of the 10 regulatory criteria established by USCIS.
 
-        For each applicable criterion below, extract and organize corresponding documentation:
-        (i) Receipt of lesser nationally or internationally recognized prizes or awards for excellence in the field.
-        (ii) Membership in associations that require outstanding achievements of their members.
-        (iii) Published material about the alien in professional or major trade publications or other major media.
-        (iv) Participation as a judge of the work of others in the same or allied field.
-        (v) Original contributions of major significance in the field.
-        (vi) Authorship of scholarly articles in professional or major trade publications or major media.
-        (vii) Display of the alien's work in artistic exhibitions or showcases.
-        (viii) Leading or critical roles for distinguished organizations or establishments.
-        (ix) Evidence of commanding a high salary or significantly high remuneration relative to others in the field.
-        (x) Commercial success in the performing arts, such as box office receipts, record/cassette/CD/video sales.
+        Instructions:
 
-        Extract all the sections that involve each criterion from the original petition content. The extracted content for each criterion must be verbatim and unchanged from the source. If a criterion is not supported by any content, return an empty array for that criterion.
+        1. ALWAYS Read the entire petition document thoroughly!
+        2. Identify and extract evidence that specifically supports each of the 10 EB-1A criteria listed below
+        3. Be precise and specific  only include evidence that directly relates to each criterion
+        4. Use exact quotes or specific references from the document when possible
+        5. If no evidence exists for a criterion, leave that array empty
+        6. Focus on factual evidence, not general statements or claims
 
-        Below is the Petition Content:
-        <petitionContent>
-        {petitionContent.strip()}
-        </petitionContent>
+        The 10 EB-1A Regulatory Criteria:
+
+        1. Lesser Awards: Evidence of receipt of lesser nationally or internationally recognized prizes or awards for excellence in the field
+        2. Association Membership: Evidence of membership in associations that require outstanding achievements as judged by recognized experts
+        3. Published Material: Evidence of published material about the person in professional or major trade publications
+        4. Judging Work of Others: Evidence of participation as a judge of the work of others in the same or allied field
+        5. Original Contributions: Evidence of original scientific, scholarly, artistic, athletic, or business-related contributions of major significance
+        6. Scholarly Articles: Evidence of authorship of scholarly articles in professional or major trade publications
+        7. Artistic Display: Evidence of display of work in artistic exhibitions or showcases
+        8. Leading or Critical Role: Evidence of performance in a leading or critical role for organizations with distinguished reputation
+        9. High Salary or Remuneration: Evidence of commanding a high salary or other significantly high remuneration
+        10. Commercial Success in Arts: Evidence of commercial successes in the performing arts
+
+        Output Format:
 
         Return the results in a JSON object with the following structure:
         {{
@@ -166,7 +181,22 @@ class RFEBOT:
                 "high_salary_or_remuneration": ["..."],
                 "commercial_success_in_arts": ["..."]
             }}
-        }}"""
+        }}
+
+        Important Notes:
+
+         Each array should contain specific pieces of evidence as separate strings
+         Include relevant details such as award names, dates, organizations, publications, etc.
+         Be conservative  only include evidence that clearly fits the specific criterion
+         If evidence could fit multiple criteria, place it in the most appropriate category
+         Maintain objectivity and accuracy in your extraction
+
+        Below is the Petition Content:
+        <petitionContent>
+        {petitionContent.strip()}
+        </petitionContent>
+
+        Now, please analyze the provided EB-1A petition document and extract the evidence according to these criteria."""
 
         llm2_response1 = llm2(prompt1)
         llm2_response2 = llm2(prompt2)
@@ -183,11 +213,11 @@ class RFEBOT:
             "media_and_judging_roles": response1.get("media_and_judging_roles", []),
             "red_flags": response1.get("red_flags")
         }
-
         return combined_response
 
     @staticmethod
     def AgentpromptInternationalAward(petitionContent: str) -> Dict:
+        print("Calling the InternationalAward Agent...")
         prompt: str = f"""You are a USCIS Officer reviewing an EB-1A petition. Your task is to evaluate whether the petitioner satisfies the "one-time achievement" criterion—specifically, whether they have received a **major, internationally recognized award**.
 
         Below is the Petition Content:
@@ -202,11 +232,11 @@ class RFEBOT:
         2. If such an award is found, set `has_major_award` to `true` and list the award(s) under `award_names`.
         3. If the award(s) mentioned do **not appear to qualify**, set `has_major_award` to `false` and explain why in `justification`.
         4. Refer to the following evaluation factors to determine whether the award qualifies:
-        - Is the award internationally recognized in the field?
-        - Does it attract worldwide competition?
-        - Has it been reported internationally in top media?
-        - Is it a familiar name to the general public?
-        - Does it include a large cash prize?
+         Is the award internationally recognized in the field?
+         Does it attract worldwide competition?
+         Has it been reported internationally in top media?
+         Is it a familiar name to the general public?
+         Does it include a large cash prize?
         5. If any of these elements are **missing or insufficient**, list them under `missing_elements`.
         6. Under `suggested_supporting_evidence`, propose what kind of documentation could strengthen the petitioner's claim that the award qualifies (based on the RFE guidance).
 
@@ -228,6 +258,7 @@ class RFEBOT:
 
     @staticmethod
     def AgenticCriterionPrompt1(petitionContent: str) -> Dict:
+        print("Calling the 1th Criterion Agent...")
         prompt: str = f"""You are a USCIS Officer evaluating EB-1A Criterion 1: "Documentation of the alien's receipt of lesser nationally or internationally recognized prizes or awards for excellence in the field of endeavor."
 
         <petitionContent>
@@ -237,21 +268,27 @@ class RFEBOT:
         Task:
         1. Extract award names into `award_names` field
         2. Set `meets_criterion_1` to `true` only if awards have strong evidence of being:
-        - Nationally/internationally recognized
-        - Granted for excellence in beneficiary's specific field
+         Nationally/internationally recognized
+         Granted for excellence in beneficiary's specific field
 
         3. Address these RFE concerns:
-        - Award scope (local/regional vs national/international)
-        - Purpose (excellence vs participation/attendance)
-        - Field relevance
-        - Academic-only status
-        - Documentary evidence gaps:
+         Award scope (local/regional vs national/international)
+         Purpose (excellence vs participation/attendance)
+         Field relevance
+         Academic-only status
+         Documentary evidence gaps:
             * Selection criteria * Award significance/prestige
             * Granting organization reputation * Geographic eligibility scope
             * Annual recipient numbers * Notable past winners
             * Media coverage/announcements
 
-        4. Provide analysis in JSON format with decision reasoning, detected issues, missing elements, and suggested supporting evidence.
+        4. In `risk`, classify the overall risk of this criterion being denied as `"High"`, `"Medium"`, or `"Low"` based on the strength of evidence.  
+        - `"High"` if the evidence is weak, general, or missing key elements.  
+        - `"Medium"` if some evidence exists but lacks strong support or clear documentation.  
+        - `"Low"` if the evidence is strong, well-documented, and clearly meets USCIS standards.
+
+
+        5. Provide analysis in JSON format with decision reasoning, detected issues, missing elements, and suggested supporting evidence.
 
         Return only JSON:
         {{
@@ -260,7 +297,8 @@ class RFEBOT:
         "reasoning": "...",
         "issues_detected": ["..."],
         "missing_elements": ["..."],
-        "suggested_supporting_evidence": ["..."]
+        "suggested_supporting_evidence": ["..."],
+        "risk": "High | Medium | Low",
         }}"""
         llm2_response = llm2(prompt)
         response = RFEBOT.reponseParser(llm2_response)
@@ -268,6 +306,7 @@ class RFEBOT:
 
     @staticmethod
     def AgenticCriterionPrompt2(petitionContent: str) -> Dict:
+        print("Calling the 2nd Criterion Agent...")
         prompt: str = f"""You are a USCIS Officer reviewing an EB-1A petition. Your task is to evaluate whether the petitioner satisfies **Criterion 2**: “Documentation of the beneficiary's membership in associations in the field for which classification is sought. The association must require outstanding achievements of their members, as judged by recognized national or international experts in their disciplines or fields.”
 
         <petitionContent>
@@ -280,29 +319,36 @@ class RFEBOT:
         1. Identify all associations the beneficiary claims membership in and list them under `association_names`.
 
         2. Set `meets_criterion_2` to `true` **only if** the following are established:
-        - The association is clearly related to the petitioner's field.
-        - The association **requires outstanding achievements** for the level of membership held.
-        - The selection is judged or reviewed by **recognized national or international experts** in the field.
+         The association is clearly related to the petitioner's field.
+         The association **requires outstanding achievements** for the level of membership held.
+         The selection is judged or reviewed by **recognized national or international experts** in the field.
 
         3. Carefully evaluate for RFE indicators. If applicable, list problems in `issues_detected`. Common issues include:
-        - No proof that the association is **related to the field**.
-        - Membership appears to be **open or general** rather than achievement-based.
-        - No evidence that reviewers are **recognized experts**.
-        - No **bylaws or membership criteria** included.
-        - Only student-level or early-career membership provided.
+         No proof that the association is **related to the field**.
+         Membership appears to be **open or general** rather than achievement-based.
+         No evidence that reviewers are **recognized experts**.
+         No **bylaws or membership criteria** included.
+         Only student-level or early-career membership provided.
 
         4. Use `missing_elements` to highlight gaps in evidence. These may include:
-        - Lack of association bylaws.
-        - No information on reviewer qualifications.
-        - No criteria showing outstanding achievements are required.
-        - Lack of clarity about the beneficiary's **level of membership** (e.g., Fellow vs. General).
+         Lack of association bylaws.
+         No information on reviewer qualifications.
+         No criteria showing outstanding achievements are required.
+         Lack of clarity about the beneficiary's **level of membership** (e.g., Fellow vs. General).
 
         5. In `suggested_supporting_evidence`, recommend helpful documentation, such as:
-        - The relevant section of the association's constitution/bylaws showing membership requirements.
-        - Documents proving that selection is based on outstanding achievements.
-        - Info establishing that reviewers are nationally or internationally recognized experts.
-        - Evidence that association membership is limited and prestigious.
+         The relevant section of the association's constitution/bylaws showing membership requirements.
+         Documents proving that selection is based on outstanding achievements.
+         Info establishing that reviewers are nationally or internationally recognized experts.
+         Evidence that association membership is limited and prestigious.
 
+        6. In `risk`, classify the overall risk of this criterion being denied as `"High"`, `"Medium"`, or `"Low"` based on the strength of evidence.  
+        - `"High"` if the evidence is weak, general, or missing key elements.  
+        - `"Medium"` if some evidence exists but lacks strong support or clear documentation.  
+        - `"Low"` if the evidence is strong, well-documented, and clearly meets USCIS standards.
+
+        
+        
         Return only the JSON object. Do not add explanation outside the object.
         Analyze the content and return your findings in the following JSON format:
 
@@ -312,7 +358,8 @@ class RFEBOT:
         "reasoning": "...",
         "issues_detected": ["..."],
         "missing_elements": ["..."],
-        "suggested_supporting_evidence": ["..."]
+        "suggested_supporting_evidence": ["..."],
+        "risk": "High | Medium | Low",
         }}
         """
         response = RFEBOT.reponseParser(llm2(prompt))
@@ -320,6 +367,7 @@ class RFEBOT:
 
     @staticmethod
     def AgenticCriterionPrompt3(petitionContent: str) -> Dict:
+        print("Calling the 3rd Criterion Agent...")
         prompt = f"""You are a USCIS Officer reviewing an EB-1A petition. Your task is to evaluate whether the petitioner satisfies **Criterion 3**: "Published material about the beneficiary in professional or major trade publications or other major media." The materials must relate to the beneficiary’s work in the field for which classification is sought.
 
         <petitionContent>
@@ -329,36 +377,42 @@ class RFEBOT:
         Instructions:
 
         1. For each piece of published material, extract key information including:
-        - Title, author, date
-        - Media type (print, online, broadcast)
-        - Publication name
-        - Circulation or reach (if provided)
-        - Intended audience (professional, general, etc.)
+         Title, author, date
+         Media type (print, online, broadcast)
+         Publication name
+         Circulation or reach (if provided)
+         Intended audience (professional, general, etc.)
 
         2. Determine:
-        - Is the content **about the beneficiary**? (`about_beneficiary`)
-        - Is it specifically about **the beneficiary's work in the field**? (`about_beneficiarys_work`)
+         Is the content **about the beneficiary**? (`about_beneficiary`)
+         Is it specifically about **the beneficiary's work in the field**? (`about_beneficiarys_work`)
 
         3. Set `meets_criterion_3` to `true` only if:
 
-        - At least one published material meets both criteria above.
-        - The publication is a **professional or major trade publication** or **major media outlet**.
-        - The content focuses on the **beneficiary and their specific work** (not just the company or a product, and not a mere mention or citation).
+         At least one published material meets both criteria above.
+         The publication is a **professional or major trade publication** or **major media outlet**.
+         The content focuses on the **beneficiary and their specific work** (not just the company or a product, and not a mere mention or citation).
 
         4. If the content fails on any of the following, include them in `issues` per article:
-        - Publication is not recognized as major media or trade publication.
-        - Article is not actually about the beneficiary or their work.
-        - It's a marketing or promotional piece, not journalistic content.
-        - Citations or footnotes without evaluative content.
-        - No proof of reach, relevance, or media credibility.
+         Publication is not recognized as major media or trade publication.
+         Article is not actually about the beneficiary or their work.
+         It's a marketing or promotional piece, not journalistic content.
+         Citations or footnotes without evaluative content.
+         No proof of reach, relevance, or media credibility.
 
         5. In `missing_elements`, list key supporting details that are absent (e.g., "no circulation info," "missing publication audience").
 
         6. In `suggested_supporting_evidence`, recommend documents the petitioner could include to strengthen this criterion, such as:
-        - Screenshots or scans of articles showing full publication data
-        - Media kits or audience reports of the publication
-        - Articles with in-depth focus on the beneficiary's specific achievements
-        - Evidence of independent reporting (not self-promotional)
+         Screenshots or scans of articles showing full publication data
+         Media kits or audience reports of the publication
+         Articles with in-depth focus on the beneficiary's specific achievements
+         Evidence of independent reporting (not self-promotional)
+
+        7. In `risk`, classify the overall risk of this criterion being denied as `"High"`, `"Medium"`, or `"Low"` based on the strength of evidence.  
+        - `"High"` if the evidence is weak, general, or missing key elements.  
+        - `"Medium"` if some evidence exists but lacks strong support or clear documentation.  
+        - `"Low"` if the evidence is strong, well-documented, and clearly meets USCIS standards.
+
 
         You must **ALWAYS** Return the result in the following JSON format:
 
@@ -380,7 +434,8 @@ class RFEBOT:
         ],
         "overall_reasoning": "...",
         "missing_elements": ["..."],
-        "suggested_supporting_evidence": ["..."]
+        "suggested_supporting_evidence": ["..."],
+        "risk": "High | Medium | Low",
         }}
         """
         response = RFEBOT.reponseParser(llm2(prompt))
@@ -388,6 +443,8 @@ class RFEBOT:
 
     @staticmethod
     def AgenticCriterionPrompt4(petitionContent: str) -> Dict:
+        print("Calling the 4th Criterion Agent...")
+
         prompt: str = f"""You are a USCIS Officer reviewing an EB-1A petition. Your task is to evaluate whether the petitioner satisfies **Criterion 4**: "Evidence of the beneficiary's participation, either individually or on a panel, as a judge of the work of others in the same or an allied field of specialization for which classification is sought."
 
         <petitionContent>
@@ -397,33 +454,38 @@ class RFEBOT:
         Instructions:
 
         1. For each judging activity submitted, extract:
-        - Event name or organization/platform (e.g. journal, conference, grant review)
-        - Role (e.g. manuscript reviewer, panel judge, grant evaluator)
-        - Date or time period of involvement
-        - Type of work evaluated (e.g. academic papers, projects, startup proposals)
-        - Field in which the work was judged
+         Event name or organization/platform (e.g. journal, conference, grant review)
+         Role (e.g. manuscript reviewer, panel judge, grant evaluator)
+         Date or time period of involvement
+         Type of work evaluated (e.g. academic papers, projects, startup proposals)
+         Field in which the work was judged
 
         2. Determine if the judging activity was in the **same** or an **allied** field to the beneficiary’s claimed field of expertise.
-        - If yes, set `same_or_allied_field: true`
-        - If no, or unclear, set `same_or_allied_field: false` and include justification in `issues`
+         If yes, set `same_or_allied_field: true`
+         If no, or unclear, set `same_or_allied_field: false` and include justification in `issues`
 
         3. Set `meets_criterion_4: true` only if at least one clear, documented instance shows the beneficiary judged work of others **in the same or allied field**.
 
         4. Include in `issues` if:
-        - The judged field appears unrelated to the beneficiary's claimed field.
-        - There is no evidence of actual judging (e.g. invitation without confirmation).
-        - The event or organization is not credible or lacks detail.
+         The judged field appears unrelated to the beneficiary's claimed field.
+         There is no evidence of actual judging (e.g. invitation without confirmation).
+         The event or organization is not credible or lacks detail.
 
         5. List `missing_elements` such as:
-        - No link between judging field and claimed field
-        - No proof of participation
-        - No date or role specified
+         No link between judging field and claimed field
+         No proof of participation
+         No date or role specified
 
         6. Recommend `suggested_supporting_evidence` such as:
-        - Copies or screenshots of review requests and confirmations
-        - Proof of judging (e.g. thank-you letters, portal screenshots)
-        - Descriptions or links showing the relevance of the judged material to the beneficiary’s field
-        - Statements or credentials showing how the reviewed field is allied
+         Copies or screenshots of review requests and confirmations
+         Proof of judging (e.g. thank-you letters, portal screenshots)
+         Descriptions or links showing the relevance of the judged material to the beneficiary's field
+         Statements or credentials showing how the reviewed field is allied
+
+        7. In `risk`, classify the overall risk of this criterion being denied as `"High"`, `"Medium"`, or `"Low"` based on the strength of evidence.  
+        - `"High"` if the evidence is weak, general, or missing key elements.  
+        - `"Medium"` if some evidence exists but lacks strong support or clear documentation.  
+        - `"Low"` if the evidence is strong, well-documented, and clearly meets USCIS standards.
 
         You must **ALWAYS** Return the result in the following JSON format. Do not include commentary outside the structure.
 
@@ -442,7 +504,8 @@ class RFEBOT:
         ],
         "overall_reasoning": "...",
         "missing_elements": ["..."],
-        "suggested_supporting_evidence": ["..."]
+        "suggested_supporting_evidence": ["..."],
+        "risk": "High | Medium | Low",
         }}
         """
         response = RFEBOT.reponseParser(llm2(prompt))
@@ -450,6 +513,8 @@ class RFEBOT:
 
     @staticmethod
     def AgenticCriterionPrompt5(petitionContent: str) -> Dict:
+        print("Calling the 5th Criterion Agent...")
+
         prompt: str = f"""You are a USCIS Officer reviewing an EB-1A petition. Your task is to evaluate whether the petitioner satisfies **Criterion 5**: "Evidence of the beneficiary's original scientific, scholarly, artistic, athletic, or business-related contributions of major significance in the field."
 
         <petitionContent>
@@ -461,9 +526,9 @@ class RFEBOT:
         1. Extract all described contributions from the submission, including publications, innovations, business ventures, designs, software, athletic feats, or scholarly theories.
 
         2. For each, assess:
-        - Whether the work is **original** (i.e., novel and not a replication)
-        - Whether the contribution is of **major significance** (i.e., widely cited, adopted, licensed, or used across the field)
-        - Whether experts or credible entities in the field recognize the importance of the work
+         Whether the work is **original** (i.e., novel and not a replication)
+         Whether the contribution is of **major significance** (i.e., widely cited, adopted, licensed, or used across the field)
+         Whether experts or credible entities in the field recognize the importance of the work
 
         3. Set `meets_criterion_5: true` only if at least one contribution is clearly both original and of major significance to the field of endeavor.
 
@@ -474,22 +539,28 @@ class RFEBOT:
         6. In `impact_summary`, briefly describe how the work has influenced the field or has been implemented (e.g., adopted by organizations, licensed, cited widely).
 
         7. Use `issues` to flag:
-        - Lack of proof of originality or uniqueness
-        - Lack of implementation, citation, or real-world use
-        - General praise without specific, measurable impact
-        - Vague expert letters without concrete details
+         Lack of proof of originality or uniqueness
+         Lack of implementation, citation, or real-world use
+         General praise without specific, measurable impact
+         Vague expert letters without concrete details
 
         8. Use `missing_elements` to list:
-        - No implementation or licensing proof
-        - No third-party expert commentary
-        - No usage evidence
-        - No citation or media reference
+         No implementation or licensing proof
+         No third-party expert commentary
+         No usage evidence
+         No citation or media reference
 
         9. Recommend `suggested_supporting_evidence` such as:
-        - Expert letters describing how the work is both original and significant
-        - Evidence of use in industry (contracts, deployment, citations, partnerships)
-        - Patent citations or commercial impact data
-        - Screenshots, links, or media articles referencing the innovation
+         Expert letters describing how the work is both original and significant
+         Evidence of use in industry (contracts, deployment, citations, partnerships)
+         Patent citations or commercial impact data
+         Screenshots, links, or media articles referencing the innovation
+
+        10. In `risk`, classify the overall risk of this criterion being denied as `"High"`, `"Medium"`, or `"Low"` based on the strength of evidence.  
+        - `"High"` if the evidence is weak, general, or missing key elements.  
+        - `"Medium"` if some evidence exists but lacks strong support or clear documentation.  
+        - `"Low"` if the evidence is strong, well-documented, and clearly meets USCIS standards.
+
 
         ALWAYS Return only the JSON object. Do not include any commentary or explanations outside the structure.
 
@@ -510,7 +581,8 @@ class RFEBOT:
         ],
         "overall_reasoning": "...",
         "missing_elements": ["..."],
-        "suggested_supporting_evidence": ["..."]
+        "suggested_supporting_evidence": ["..."],
+        "risk": "High | Medium | Low",
         }}
         """
         llm2_response = llm2(prompt)
@@ -519,6 +591,7 @@ class RFEBOT:
 
     @staticmethod
     def AgenticCriterionPrompt6(petitionContent: str) -> Dict:
+        print("Calling the 6th Criterion Agent...")
         prompt: str = f"""You are a USCIS Officer reviewing an EB-1A petition. Your task is to evaluate whether the petitioner satisfies **Criterion 6**: "Evidence of the beneficiary's authorship of scholarly articles in the field, in professional or major trade publications or other major media."
                 
         <petitionContent>
@@ -529,42 +602,48 @@ class RFEBOT:
         Instructions:
 
         1. Extract each listed article or publication and analyze whether it qualifies under the following conditions:
-        - The article must be **scholarly in nature** (i.e., deals with academic subject matter)
-        - It must be **authored by the petitioner** (name should appear clearly as author)
-        - It must have been published in a **professional journal, trade publication, or other major media**
-        - It must preferably have undergone a **peer review or editorial process**
+         The article must be **scholarly in nature** (i.e., deals with academic subject matter)
+         It must be **authored by the petitioner** (name should appear clearly as author)
+         It must have been published in a **professional journal, trade publication, or other major media**
+         It must preferably have undergone a **peer review or editorial process**
 
         2. Set `meets_criterion_6: true` only if **at least one** article clearly meets all the above conditions.
 
         3. For each article:
-        - In `publication_type`, specify whether it's a peer-reviewed journal, trade magazine, or major media (e.g., Forbes, Nature, IEEE Transactions, Harvard Business Review).
-        - In `academic_subject_matter`, mark `true` if the article focuses on a technical, business, scientific, or artistic theory or concept.
-        - In `peer_reviewed`, mark `true` only if documentation of a peer review process exists or the journal is known for it.
-        - In `publication_is_major`, mark `true` if the publication is widely circulated, prestigious, or highly ranked.
+         In `publication_type`, specify whether it's a peer-reviewed journal, trade magazine, or major media (e.g., Forbes, Nature, IEEE Transactions, Harvard Business Review).
+         In `academic_subject_matter`, mark `true` if the article focuses on a technical, business, scientific, or artistic theory or concept.
+         In `peer_reviewed`, mark `true` only if documentation of a peer review process exists or the journal is known for it.
+         In `publication_is_major`, mark `true` if the publication is widely circulated, prestigious, or highly ranked.
 
         4. In `evidence_summary`, include any submitted materials such as:
-        - Citation indexes (Google Scholar, Scopus)
-        - Screenshots or PDFs of journal covers and articles
-        - Proof of peer-review process
-        - Circulation metrics or media reputation
+         Citation indexes (Google Scholar, Scopus)
+         Screenshots or PDFs of journal covers and articles
+         Proof of peer-review process
+         Circulation metrics or media reputation
 
         5. Use `issues` to list any concerns, such as:
-        - Lack of proof of authorship
-        - Article appears in blog, newsletter, or unknown platform
-        - Publication is obscure or lacks prestige
-        - Article lacks academic depth
+         Lack of proof of authorship
+         Article appears in blog, newsletter, or unknown platform
+         Publication is obscure or lacks prestige
+         Article lacks academic depth
 
         6. Use `missing_elements` to list what is absent in the supporting documents:
-        - No evidence of peer-review
-        - No subject matter analysis
-        - No circulation stats for publication
-        - No indication it's a professional or major trade publication
+         No evidence of peer-review
+         No subject matter analysis
+         No circulation stats for publication
+         No indication it's a professional or major trade publication
 
         7. Recommend `suggested_supporting_evidence` such as:
-        - Screenshots or links from Google Scholar showing authorship
-        - Peer-review policy pages from the journal website
-        - Circulation or ranking data from third-party journal databases
-        - Expert testimony confirming academic nature and journal prestige
+         Screenshots or links from Google Scholar showing authorship
+         Peer-review policy pages from the journal website
+         Circulation or ranking data from third-party journal databases
+         Expert testimony confirming academic nature and journal prestige
+
+        8. In `risk`, classify the overall risk of this criterion being denied as `"High"`, `"Medium"`, or `"Low"` based on the strength of evidence.  
+        - `"High"` if the evidence is weak, general, or missing key elements.  
+        - `"Medium"` if some evidence exists but lacks strong support or clear documentation.  
+        - `"Low"` if the evidence is strong, well-documented, and clearly meets USCIS standards.
+
 
         Return only the JSON object. Do not include any commentary or explanations outside the structure.
 
@@ -584,7 +663,8 @@ class RFEBOT:
         ],
         "overall_reasoning": "...",
         "missing_elements": ["..."],
-        "suggested_supporting_evidence": ["..."]
+        "suggested_supporting_evidence": ["..."],
+        "risk": "High | Medium | Low",
         }}
         """
         llm2_response = llm2(prompt)
@@ -593,6 +673,7 @@ class RFEBOT:
 
     @staticmethod
     def AgenticCriterionPrompt7(petitionContent: str) -> Dict:
+        print("Calling the 7th Criterion Agent...")
         prompt: str = f"""You are a USCIS Officer reviewing an EB-1A petition. Your task is to evaluate whether the petitioner satisfies **Criterion 7**:  **"Evidence of the display of the beneficiary's work in the field at artistic exhibitions or showcases."**
                 
         <petitionContent>
@@ -603,39 +684,45 @@ class RFEBOT:
         Instructions:
 
         1. Extract each exhibition or display and evaluate if it meets the following:
-        - The work was **created by the petitioner** (authorship can be verified)
-        - The venue was a **recognized artistic exhibition or showcase**, either physical or virtual
+         The work was **created by the petitioner** (authorship can be verified)
+         The venue was a **recognized artistic exhibition or showcase**, either physical or virtual
 
         2. Set `meets_criterion_7: true` only if **at least one** exhibition satisfies both:
-        - Authorship is confirmed
-        - Venue qualifies as a legitimate artistic exhibition or showcase
+         Authorship is confirmed
+         Venue qualifies as a legitimate artistic exhibition or showcase
 
         3. For each exhibition:
-        - In `venue`, include the name of the gallery, museum, conference, or online platform
-        - Mark `is_artistic_showcase: true` only if the venue is a curated or recognized artistic display platform
-        - Use `is_virtual` to indicate whether the exhibition was online or physical
-        - Mark `authorship_verified: true` only if documentation shows the work was created by the petitioner
+         In `venue`, include the name of the gallery, museum, conference, or online platform
+         Mark `is_artistic_showcase: true` only if the venue is a curated or recognized artistic display platform
+         Use `is_virtual` to indicate whether the exhibition was online or physical
+         Mark `authorship_verified: true` only if documentation shows the work was created by the petitioner
 
         4. Use `evidence_summary` to list submitted materials such as:
-        - Photographs or videos of the displayed work
-        - Catalogs, exhibition brochures, or gallery announcements
-        - Invitations, press coverage, or promotional materials
-        - Artist statements or testimony confirming authorship
+         Photographs or videos of the displayed work
+         Catalogs, exhibition brochures, or gallery announcements
+         Invitations, press coverage, or promotional materials
+         Artist statements or testimony confirming authorship
 
         5. Use `issues` to flag any problems, such as:
-        - Venue not clearly an artistic exhibition or showcase
-        - Lack of evidence linking displayed work to the petitioner
-        - Work was displayed but in a commercial or informal context
+         Venue not clearly an artistic exhibition or showcase
+         Lack of evidence linking displayed work to the petitioner
+         Work was displayed but in a commercial or informal context
 
         6. Use `missing_elements` to list absent materials, such as:
-        - No proof that the petitioner created the work
-        - No documentation proving the venue is an artistic exhibition or showcase
-        - No promotional or curatorial materials
+         No proof that the petitioner created the work
+         No documentation proving the venue is an artistic exhibition or showcase
+         No promotional or curatorial materials
 
         7. Use `suggested_supporting_evidence` to list ways to strengthen the petition, such as:
-        - Submit sales records, creation logs, or copyright statements verifying authorship
-        - Provide documentation about the venue's reputation as an artistic showcase
-        - Submit promotional flyers, press articles, or social media posts by the venue
+         Submit sales records, creation logs, or copyright statements verifying authorship
+         Provide documentation about the venue's reputation as an artistic showcase
+         Submit promotional flyers, press articles, or social media posts by the venue
+
+        8. In `risk`, classify the overall risk of this criterion being denied as `"High"`, `"Medium"`, or `"Low"` based on the strength of evidence.  
+        - `"High"` if the evidence is weak, general, or missing key elements.  
+        - `"Medium"` if some evidence exists but lacks strong support or clear documentation.  
+        - `"Low"` if the evidence is strong, well-documented, and clearly meets USCIS standards.
+
 
         Return the result in the following JSON format. Do not include any commentary or explanations outside the structure.
         {{
@@ -653,7 +740,8 @@ class RFEBOT:
         ],
         "overall_reasoning": "...",
         "missing_elements": ["..."],
-        "suggested_supporting_evidence": ["..."]
+        "suggested_supporting_evidence": ["..."],
+        "risk": "High | Medium | Low",
         }}
         """
         response = RFEBOT.reponseParser(llm2(prompt))
@@ -661,6 +749,7 @@ class RFEBOT:
 
     @staticmethod
     def AgenticCriterionPrompt8(petitionContent: str) -> Dict:
+        print("Calling the 8th Criterion Agent...")
         prompt: str = f"""You are a USCIS Officer reviewing an EB-1A petition. Your task is to evaluate whether the petitioner satisfies **Criterion 8**:  **"Evidence that the beneficiary has performed in a leading or critical role for organizations or establishments that have a distinguished reputation."**
 
         <petitionContent>
@@ -670,37 +759,43 @@ class RFEBOT:
         Instructions:
 
         1. Evaluate each organization where the petitioner claims to have served in a **leading or critical role**.
-        - “Leading” means high-ranking decision-making position (e.g., director, CTO, head researcher)
-        - “Critical” means the work was essential to the outcome or success of the organization’s goals
+         “Leading” means high-ranking decision-making position (e.g., director, CTO, head researcher)
+         “Critical” means the work was essential to the outcome or success of the organization’s goals
 
         2. For each organization:
-        - `name`: Organization's name
-        - `beneficiary_role`: Stated role or position held by the petitioner
-        - `is_leading_or_critical`: `true` if the evidence shows the petitioner's performance significantly influenced the organization
-        - `role_explanation`: Describe what specific actions or performance justifies the role as leading/critical
-        - `distinguished_reputation`: `true` if the organization is shown to be of high repute in its industry/field
-        - `reputation_evidence`: List sources (e.g., media recognition, awards, rankings, partnerships, market share, historical significance, etc.)
-        - `supporting_documents`: List submitted materials such as:
-            - Organizational charts
-            - Letters from CEOs or stakeholders
-            - Internal reports, KPIs influenced by petitioner
-            - Press releases or awards
-            - Public news/media coverage of the petitioner's impact or the organization's prominence
-        - `issues`: Highlight any problems, e.g., unclear responsibilities, weak reputation evidence, unclear link between role and outcome
+         `name`: Organization's name
+         `beneficiary_role`: Stated role or position held by the petitioner
+         `is_leading_or_critical`: `true` if the evidence shows the petitioner's performance significantly influenced the organization
+         `role_explanation`: Describe what specific actions or performance justifies the role as leading/critical
+         `distinguished_reputation`: `true` if the organization is shown to be of high repute in its industry/field
+         `reputation_evidence`: List sources (e.g., media recognition, awards, rankings, partnerships, market share, historical significance, etc.)
+         `supporting_documents`: List submitted materials such as:
+             Organizational charts
+             Letters from CEOs or stakeholders
+             Internal reports, KPIs influenced by petitioner
+             Press releases or awards
+             Public news/media coverage of the petitioner's impact or the organization's prominence
+         `issues`: Highlight any problems, e.g., unclear responsibilities, weak reputation evidence, unclear link between role and outcome
 
         3. `meets_criterion_8: true` only if **at least one** organization qualifies under:
-        - Role is well-evidenced as leading or critical
-        - Organization is demonstrated to be of **distinguished reputation**
+         Role is well-evidenced as leading or critical
+         Organization is demonstrated to be of **distinguished reputation**
 
         4. Use `missing_elements` to list gaps in the evidence, such as:
-        - Lack of performance details in the role
-        - No documents proving the organization's prominence
-        - Role is high in title but low in impact
+         Lack of performance details in the role
+         No documents proving the organization's prominence
+         Role is high in title but low in impact
 
         5. Use `suggested_supporting_evidence` to recommend how to improve, such as:
-        - Submit detailed letters explaining specific impact of the role
-        - Provide company press coverage, public financial data, industry ranking
-        - Clarify the unique significance of the ' contribution vs. others
+         Submit detailed letters explaining specific impact of the role
+         Provide company press coverage, public financial data, industry ranking
+         Clarify the unique significance of the ' contribution vs. others
+
+        6. In `risk`, classify the overall risk of this criterion being denied as `"High"`, `"Medium"`, or `"Low"` based on the strength of evidence.  
+        - `"High"` if the evidence is weak, general, or missing key elements.  
+        - `"Medium"` if some evidence exists but lacks strong support or clear documentation.  
+        - `"Low"` if the evidence is strong, well-documented, and clearly meets USCIS standards.
+
 
         ALWAYS Return the result in the following JSON format. Do not include any commentary or explanations outside the structure.
         {{
@@ -719,7 +814,8 @@ class RFEBOT:
         ],
         "overall_reasoning": "...",
         "missing_elements": ["..."],
-        "suggested_supporting_evidence": ["..."]
+        "suggested_supporting_evidence": ["..."],
+        "risk": "High | Medium | Low",
         }}
         """
         response = RFEBOT.reponseParser(llm2(prompt))
@@ -727,6 +823,7 @@ class RFEBOT:
 
     @staticmethod
     def AgenticCriterionPrompt9(petitionContent: str) -> Dict:
+        print("Calling the 9th Criterion Agent...")
         prompt: str = f"""You are a USCIS Officer reviewing an EB-1A petition. Your task is to evaluate whether the petitioner satisfies **Criterion 9**:  **"Evidence that the beneficiary has commanded a high salary or other significantly high remuneration for services, in relation to others in the field."**
 
         <petitionContent>
@@ -738,31 +835,37 @@ class RFEBOT:
         1. Evaluate whether the petition demonstrates that the beneficiary received a **high salary or other significantly high remuneration**, and whether it is **high relative to others in the field**.
 
         2. For each salary/remuneration claim:
-        - `year`: The tax year or employment period the evidence covers
-        - `salary_amount`: Total salary/remuneration stated (with currency)
-        - `source`: Type of evidence (e.g., W-2, 1099, foreign tax form, salary letter, contract)
-        - `comparison_evidence_provided`: `true` if the petition includes documents showing how this salary compares to others in the same field/region
-        - `is_significantly_high`: `true` if supported evidence clearly shows the salary is above industry norms
-        - `supporting_documents`: List submitted materials such as:
-            - Pay stubs, W-2s, 1099s, foreign tax records
-            - Salary letters or employment contracts
-            - Compensation surveys, public salary databases
-            - Media reports, awards tied to high compensation
-        - `issues`: Highlight any concerns (e.g., no comparison data, role unrelated to field, unclear if base salary or total comp)
+         `year`: The tax year or employment period the evidence covers
+         `salary_amount`: Total salary/remuneration stated (with currency)
+         `source`: Type of evidence (e.g., W-2, 1099, foreign tax form, salary letter, contract)
+         `comparison_evidence_provided`: `true` if the petition includes documents showing how this salary compares to others in the same field/region
+         `is_significantly_high`: `true` if supported evidence clearly shows the salary is above industry norms
+         `supporting_documents`: List submitted materials such as:
+             Pay stubs, W-2s, 1099s, foreign tax records
+             Salary letters or employment contracts
+             Compensation surveys, public salary databases
+             Media reports, awards tied to high compensation
+         `issues`: Highlight any concerns (e.g., no comparison data, role unrelated to field, unclear if base salary or total comp)
 
         3. `meets_criterion_9: true` only if at least one salary is:
-        - Shown to be **significantly high relative** to others in the **same or allied field**
-        - Supported by comparative industry data or documentation
+         Shown to be **significantly high relative** to others in the **same or allied field**
+         Supported by comparative industry data or documentation
 
         4. Use `missing_elements` to list gaps in the evidence, such as:
-        - Lack of comparative compensation data
-        - No supporting documents (just a statement or letter)
-        - Unclear if the remuneration is for work in the claimed field of expertise
+         Lack of comparative compensation data
+         No supporting documents (just a statement or letter)
+         Unclear if the remuneration is for work in the claimed field of expertise
 
         5. Use `suggested_supporting_evidence` to recommend how to improve, such as:
-        - Provide industry-wide salary comparison charts
-        - Submit compensation data from DOL, Glassdoor, PayScale, etc.
-        - Add letters from employers justifying above-market compensation
+         Provide industry-wide salary comparison charts
+         Submit compensation data from DOL, Glassdoor, PayScale, etc.
+         Add letters from employers justifying above-market compensation
+        
+        6. In `risk`, classify the overall risk of this criterion being denied as `"High"`, `"Medium"`, or `"Low"` based on the strength of evidence.  
+        - `"High"` if the evidence is weak, general, or missing key elements.  
+        - `"Medium"` if some evidence exists but lacks strong support or clear documentation.  
+        - `"Low"` if the evidence is strong, well-documented, and clearly meets USCIS standards.
+
 
         ALWAYS Return the result in the following JSON format. Do not include any commentary or explanations outside the structure.
 
@@ -781,7 +884,8 @@ class RFEBOT:
         ],
         "overall_reasoning": "...",
         "missing_elements": ["..."],
-        "suggested_supporting_evidence": ["..."]
+        "suggested_supporting_evidence": ["..."],
+        "risk": "High | Medium | Low",
         }}
         """
         response = RFEBOT.reponseParser(llm2(prompt))
@@ -789,6 +893,7 @@ class RFEBOT:
 
     @staticmethod
     def AgenticCriterionPrompt10(petitionContent: str) -> Dict:
+        print("Calling the 10th Criterion Agent...")
         prompt: str = f"""You are a USCIS Officer reviewing an EB-1A petition. Your task is to evaluate whether the petitioner satisfies **Criterion 10**:  **"Evidence of commercial successes in the performing arts, as shown by box office receipts or record, cassette, compact disk, or video sales."**
 
         <petitionContent>
@@ -798,35 +903,41 @@ class RFEBOT:
         Instructions:
 
         1. Determine whether the beneficiary has demonstrated **commercial success in the performing arts**.
-        - Commercial success must be evidenced by **volume of sales** or **box office receipts**
-        - Merely performing or releasing work does **not** prove commercial success
+         Commercial success must be evidenced by **volume of sales** or **box office receipts**
+         Merely performing or releasing work does **not** prove commercial success
 
         2. For each production or work claimed:
-        - `title`: Name of the work (e.g., movie, album, production)
-        - `type`: Type of performing art (e.g., music, theater, film, TV)
-        - `sales_or_receipts`: Total reported sales or earnings (include currency and figures)
-        - `is_commercial_success`: `true` if sales/receipts are substantial compared to industry benchmarks
-        - `supporting_documents`: List submitted materials such as:
-            - Box office statements
-            - Record or CD/DVD sales reports
-            - Streaming platform revenue stats
-            - Contracts with financial breakdowns
-            - Third-party evidence showing comparative success
-        - `issues`: Any concerns (e.g., no sales numbers, anecdotal success, unrelated performances)
+         `title`: Name of the work (e.g., movie, album, production)
+         `type`: Type of performing art (e.g., music, theater, film, TV)
+         `sales_or_receipts`: Total reported sales or earnings (include currency and figures)
+         `is_commercial_success`: `true` if sales/receipts are substantial compared to industry benchmarks
+         `supporting_documents`: List submitted materials such as:
+             Box office statements
+             Record or CD/DVD sales reports
+             Streaming platform revenue stats
+             Contracts with financial breakdowns
+             Third-party evidence showing comparative success
+         `issues`: Any concerns (e.g., no sales numbers, anecdotal success, unrelated performances)
 
         3. `meets_criterion_10: true` only if at least one work is:
-        - **Commercially successful** based on volume of sales/receipts
-        - Supported with concrete, quantifiable evidence
+         **Commercially successful** based on volume of sales/receipts
+         Supported with concrete, quantifiable evidence
 
         4. Use `missing_elements` to list gaps in the evidence, such as:
-        - No proof of actual sales or earnings
-        - No comparative data to show that success is significant
-        - Just mentions of performances without financial metrics
+         No proof of actual sales or earnings
+         No comparative data to show that success is significant
+         Just mentions of performances without financial metrics
 
         5. Use `suggested_supporting_evidence` to recommend improvements, such as:
-        - Submit box office or ticketing statements with verified totals
-        - Provide music or video sales reports (e.g., Nielsen, Spotify, Billboard, iTunes)
-        - Include industry comparisons showing top percentile revenue
+         Submit box office or ticketing statements with verified totals
+         Provide music or video sales reports (e.g., Nielsen, Spotify, Billboard, iTunes)
+         Include industry comparisons showing top percentile revenue
+
+        6. In `risk`, classify the overall risk of this criterion being denied as `"High"`, `"Medium"`, or `"Low"` based on the strength of evidence.  
+        - `"High"` if the evidence is weak, general, or missing key elements.  
+        - `"Medium"` if some evidence exists but lacks strong support or clear documentation.  
+        - `"Low"` if the evidence is strong, well-documented, and clearly meets USCIS standards.
+
 
         ALWAYS Return the result in the following JSON format. Do not include any commentary or explanations outside the structure.
 
@@ -844,9 +955,11 @@ class RFEBOT:
         ],
         "overall_reasoning": "...",
         "missing_elements": ["..."],
-        "suggested_supporting_evidence": ["..."]
+        "suggested_supporting_evidence": ["..."],
+        "risk": "High | Medium | Low",
         }}
         """
         response = RFEBOT.reponseParser(llm2(prompt))
         return response  # this is the reponse for the criterion 10
     
+
