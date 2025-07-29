@@ -3,7 +3,9 @@ python-docx
 python-dotenv
 python-multipart
 langchain-anthropic
+langchain-groq
 langchain
+pyfiglet
 black
-streamlit # for formating my code
+uvicorn
 fastapi # for serving the agents

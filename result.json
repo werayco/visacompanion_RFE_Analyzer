@@ -28,7 +28,8 @@
     "reasoning": "The petition provides strong evidence that the Google Developer Expert award and 3rd place in the 'Digital Breakthrough' hackathon are nationally or internationally recognized awards for excellence in the beneficiary's field of software development:    Google Developer Expert:   - Internationally recognized by Google, a global leader in technology    - Granted to only about 0.025% of developers using Google's Flutter technology worldwide based on expertise and significant contributions   - Provides access to Google events and product teams, indicating high prestige   - Recognized beyond Google by other industry leaders like JetBrains   - More LinkedIn followers than the Academy of Motion Picture Arts and Sciences (Oscars), showing high interest    'Digital Breakthrough' 3rd Place:    - National competition in Russia with no geographic limits on participants   - Judging criteria focused on software prototype, problem solving, development, implementation, UI/UX, indicating granted for excellence     - Organized by 'Russia - Land of Opportunity', a prestigious non-profit established by presidential decree   - Media coverage by national TV",
     "issues_detected": [],
     "missing_elements": [],
-    "suggested_supporting_evidence": []
+    "suggested_supporting_evidence": [],
+    "risk": "Low"
   },
   "Criterion2Result": {
     "meets_criterion_2": true,
@@ -39,7 +40,8 @@
     "reasoning": "The petition provides strong evidence that Mr. Inkin meets Criterion 2 through his membership in IEEE at the Senior level and in the Google Developer Experts program as a Dart & Flutter Expert. For IEEE Senior Membership, the petition establishes that IEEE is a distinguished association in the field of engineering and computer science, that Senior Membership requires at least 10 years of professional experience with 5 years of significant performance, and that applications are judged by panels of current Senior Members and Fellows who are recognized experts. For Google Developer Experts, the petition shows this program requires solid expertise and significant contributions to the field, with a rigorous multi-stage review process involving current Experts and Google employees. Both memberships are presented as highly selective and prestigious.",
     "issues_detected": [],
     "missing_elements": [],
-    "suggested_supporting_evidence": []
+    "suggested_supporting_evidence": [],
+    "risk": "Low"
   },
   "Criterion3Result": {
     "meets_criterion_3": false,
@@ -66,7 +68,8 @@
         "type_of_work_reviewed": "Applications for IEEE Senior Membership grade",
         "field_of_judging": "Engineering, Computer sciences and information technology, Physical sciences, Biological and medical sciences, Mathematics, Technical communications, education, management, law and policy",
         "same_or_allied_field": true,
-        "issues": []
+        "issues": [],
+        "risk": "Low"
       }
     ],
     "overall_reasoning": "The evidence shows that in November 2023, Mr. Inkin served as a panel member reviewing applications for the IEEE Senior Membership grade. IEEE's designated fields include 'Computer sciences and information technology', which is Mr. Inkin's field of Software Development. Therefore, this judging activity was in the same or an allied field to Mr. Inkin's area of expertise.",
@@ -89,7 +92,8 @@
         ],
         "recognized_by_field": true,
         "impact_summary": "Mr. Inkin's contribution to PHPStan significantly reduced false positive errors reported by the analyzer and the need for redundant code comments. This allowed the tool to be widely adopted in the PHP industry, which powers over 76% of websites worldwide, resulting in improved code quality and stability of projects at companies of all sizes.",
-        "issues": []
+        "issues": [],
+        "risk": "Low"
       },
       {
         "title_or_description": "Flutter Code Editor",
@@ -159,7 +163,8 @@
       "Documentation showing a formal peer-review or editorial selection process for the articles",
       "Expert letters testifying that Medium and LinkedIn are considered major publications in the software development field",
       "Circulation data or ranking info showing the reach and influence of Medium and the FlutterDevs blog"
-    ]
+    ],
+    "risk": "Medium"
   },
   "Criterion7Result": {
     "meets_criterion_7": false,
@@ -175,7 +180,8 @@
       "Provide evidence of the beneficiary's work being displayed at recognized artistic venues, such as galleries, museums, conferences, or curated online platforms",
       "Include promotional materials, press coverage, exhibition catalogs or brochures confirming the beneficiary's participation in artistic showcases",
       "Provide statements or testimony from the beneficiary or knowledgeable experts confirming the beneficiary's authorship of displayed artistic works"
-    ]
+    ],
+    "risk": "High"
   },
   "Criterion8Result": {
     "status": "couldn't parse the content"
@@ -202,7 +208,8 @@
     ],
     "overall_reasoning": "The petition provides strong evidence that Mr. Inkin commanded a high salary relative to others in his field while working at Akvelon in Georgia from 2022-2023. His annual salary of 167,014.90 GEL (62,047.62 USD) is shown to be 3 times higher than the 2022 median IT salary in Georgia according to Forbes, and 2.02 times higher than the average salary for computer programmers according to official government statistics for the exact quarters he was employed. The salary amount is well supported by his employment contract, bank statements, and tax records. Authoritative comparative salary data is provided from both private (Forbes) and government (National Statistics Office) sources to demonstrate the salary was significantly high for the field and region.",
     "missing_elements": [],
-    "suggested_supporting_evidence": []
+    "suggested_supporting_evidence": [],
+    "risk": "Low"
   },
   "Criterion10Result": {
     "meets_criterion_10": false,

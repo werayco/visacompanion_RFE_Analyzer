@@ -98,6 +98,7 @@ def main(file_path: str) -> Dict[str, Any]:
     selected_criterion["recognizable_components"] = background
     return selected_criterion
 
+
 # start = time.time()
 # result = main(file_path=r"C:\Users\miztu\Downloads\inkin.pdf")
 # utils.Criterionutils(result)

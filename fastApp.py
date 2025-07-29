@@ -1,5 +1,5 @@
 from fastapi import FastAPI, UploadFile, File
-from fastapi.responses import  FileResponse
+from fastapi.responses import FileResponse
 import pyfiglet
 from run import main
 from utils import utils
@@ -22,8 +22,7 @@ app = FastAPI(
     lifespan=life_span
 )
 
-
-@app.get("/", status_code=200)
+@app.get("/")
 async def home():
     return {"status": "successful", "response": "You are welcome to the server!"}
 
@@ -39,11 +38,10 @@ async def uploadEB1Petition(file: UploadFile = File(...)):
     result: dict = main(file_path=file_path)
 
     output_path = utils.CriterionDocCreator(result)
-
     utils.jsonSaver(result)
+
     return FileResponse(
         output_path,
         media_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
         filename="EB1A_Assessment_Report.docx"
     )
-

@@ -1,6 +1,5 @@
 # How to run the VisaCompanion RFE Analyzer
 
-
 - Unzip the file
 - Navigate to the working directory
 
@@ -23,7 +22,7 @@ vicorn fastApp:app --reload --port 8080
  
 ![alt text](screenshots/image.png)
 
-- Open any API CLient of your choice (POSTMAN preferably) and send a get request to test if the server is actually active
+- Open any API CLient of your choice (POSTMAN preferably) and send a GET request to test if the server is actually active
 ```console
 GET http://127.0.0.1:8080
 ```
@@ -55,7 +54,7 @@ docker build -d visacomRFE:latest .
 ```console
 docker run -p 8080:8080 visacomRFE:latest
 ```
-- Open any API CLient of your choice (POSTMAN preferably) and send a get request to test if the server is actually active
+- Open any API CLient of your choice (POSTMAN preferably) and send a GET request to test if the server is actually active
 ```console
 GET http://127.0.0.1:8080
 ```

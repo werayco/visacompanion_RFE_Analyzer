@@ -11,29 +11,29 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-groq_api_key = os.getenv("GROQ_API_KEY")
+# groq_api_key = os.getenv("GROQ_API_KEY")
 claude_api_key = os.getenv("CLAUDE_API_KEY")
 agent_temp = os.getenv("AGENT_TEMP")
 
 if not claude_api_key :
     raise ValueError("Kindly make sure your claude api keys are present in the .env file.")
 
-if not groq_api_key:
-    raise ValueError("Kindly make sure your gorq api keys are present in the .env file.")
+# if not groq_api_key:
+#     raise ValueError("Kindly make sure your gorq api keys are present in the .env file.")
 
 if not agent_temp:
     raise ValueError("Kindly make sure your agent temperature are present in the .env file.")
 
 
-def llm(question: str, model: str = "deepseek-r1-distill-llama-70b") -> str:
-    """groq llm"""
-    try:
-        chat = ChatGroq(model=model, api_key=groq_api_key, temperature=0.1)
-        response = chat.invoke(question)
-        if response:
-            return response.content
-    except Exception as e:
-        return f"An error occurred: {e}"
+# def llm(question: str, model: str = "deepseek-r1-distill-llama-70b") -> str:
+#     """groq llm"""
+#     try:
+#         chat = ChatGroq(model=model, api_key=groq_api_key, temperature=0.1)
+#         response = chat.invoke(question)
+#         if response:
+#             return response.content
+#     except Exception as e:
+#         return f"An error occurred: {e}"
 
 
 def llm2(question: str):
@@ -136,7 +136,8 @@ class RFEBOT:
                 "generic_claims": "...",
                 "weak_substantiation": "...",
                 "unsupported_salary": "...",
-                "inconsistent_field": "..."
+                "inconsistent_field": "...",
+                "lack_of_independent_third_party_evidence": "..."
             }}
         }}
         """
@@ -144,7 +145,7 @@ class RFEBOT:
 
         Instructions:
 
-        1. Read the entire petition document thoroughly
+        1. ALWAYS Read the entire petition document thoroughly!
         2. Identify and extract evidence that specifically supports each of the 10 EB-1A criteria listed below
         3. Be precise and specific  only include evidence that directly relates to each criterion
         4. Use exact quotes or specific references from the document when possible
@@ -212,11 +213,11 @@ class RFEBOT:
             "media_and_judging_roles": response1.get("media_and_judging_roles", []),
             "red_flags": response1.get("red_flags")
         }
-
         return combined_response
 
     @staticmethod
     def AgentpromptInternationalAward(petitionContent: str) -> Dict:
+        print("Calling the InternationalAward Agent...")
         prompt: str = f"""You are a USCIS Officer reviewing an EB-1A petition. Your task is to evaluate whether the petitioner satisfies the "one-time achievement" criterion—specifically, whether they have received a **major, internationally recognized award**.
 
         Below is the Petition Content:
@@ -257,6 +258,7 @@ class RFEBOT:
 
     @staticmethod
     def AgenticCriterionPrompt1(petitionContent: str) -> Dict:
+        print("Calling the 1th Criterion Agent...")
         prompt: str = f"""You are a USCIS Officer evaluating EB-1A Criterion 1: "Documentation of the alien's receipt of lesser nationally or internationally recognized prizes or awards for excellence in the field of endeavor."
 
         <petitionContent>
@@ -280,7 +282,13 @@ class RFEBOT:
             * Annual recipient numbers * Notable past winners
             * Media coverage/announcements
 
-        4. Provide analysis in JSON format with decision reasoning, detected issues, missing elements, and suggested supporting evidence.
+        4. In `risk`, classify the overall risk of this criterion being denied as `"High"`, `"Medium"`, or `"Low"` based on the strength of evidence.  
+        - `"High"` if the evidence is weak, general, or missing key elements.  
+        - `"Medium"` if some evidence exists but lacks strong support or clear documentation.  
+        - `"Low"` if the evidence is strong, well-documented, and clearly meets USCIS standards.
+
+
+        5. Provide analysis in JSON format with decision reasoning, detected issues, missing elements, and suggested supporting evidence.
 
         Return only JSON:
         {{
@@ -289,7 +297,8 @@ class RFEBOT:
         "reasoning": "...",
         "issues_detected": ["..."],
         "missing_elements": ["..."],
-        "suggested_supporting_evidence": ["..."]
+        "suggested_supporting_evidence": ["..."],
+        "risk": "High | Medium | Low",
         }}"""
         llm2_response = llm2(prompt)
         response = RFEBOT.reponseParser(llm2_response)
@@ -297,6 +306,7 @@ class RFEBOT:
 
     @staticmethod
     def AgenticCriterionPrompt2(petitionContent: str) -> Dict:
+        print("Calling the 2nd Criterion Agent...")
         prompt: str = f"""You are a USCIS Officer reviewing an EB-1A petition. Your task is to evaluate whether the petitioner satisfies **Criterion 2**: “Documentation of the beneficiary's membership in associations in the field for which classification is sought. The association must require outstanding achievements of their members, as judged by recognized national or international experts in their disciplines or fields.”
 
         <petitionContent>
@@ -332,6 +342,13 @@ class RFEBOT:
          Info establishing that reviewers are nationally or internationally recognized experts.
          Evidence that association membership is limited and prestigious.
 
+        6. In `risk`, classify the overall risk of this criterion being denied as `"High"`, `"Medium"`, or `"Low"` based on the strength of evidence.  
+        - `"High"` if the evidence is weak, general, or missing key elements.  
+        - `"Medium"` if some evidence exists but lacks strong support or clear documentation.  
+        - `"Low"` if the evidence is strong, well-documented, and clearly meets USCIS standards.
+
+        
+        
         Return only the JSON object. Do not add explanation outside the object.
         Analyze the content and return your findings in the following JSON format:
 
@@ -341,7 +358,8 @@ class RFEBOT:
         "reasoning": "...",
         "issues_detected": ["..."],
         "missing_elements": ["..."],
-        "suggested_supporting_evidence": ["..."]
+        "suggested_supporting_evidence": ["..."],
+        "risk": "High | Medium | Low",
         }}
         """
         response = RFEBOT.reponseParser(llm2(prompt))
@@ -349,6 +367,7 @@ class RFEBOT:
 
     @staticmethod
     def AgenticCriterionPrompt3(petitionContent: str) -> Dict:
+        print("Calling the 3rd Criterion Agent...")
         prompt = f"""You are a USCIS Officer reviewing an EB-1A petition. Your task is to evaluate whether the petitioner satisfies **Criterion 3**: "Published material about the beneficiary in professional or major trade publications or other major media." The materials must relate to the beneficiary’s work in the field for which classification is sought.
 
         <petitionContent>
@@ -389,6 +408,12 @@ class RFEBOT:
          Articles with in-depth focus on the beneficiary's specific achievements
          Evidence of independent reporting (not self-promotional)
 
+        7. In `risk`, classify the overall risk of this criterion being denied as `"High"`, `"Medium"`, or `"Low"` based on the strength of evidence.  
+        - `"High"` if the evidence is weak, general, or missing key elements.  
+        - `"Medium"` if some evidence exists but lacks strong support or clear documentation.  
+        - `"Low"` if the evidence is strong, well-documented, and clearly meets USCIS standards.
+
+
         You must **ALWAYS** Return the result in the following JSON format:
 
         {{
@@ -409,7 +434,8 @@ class RFEBOT:
         ],
         "overall_reasoning": "...",
         "missing_elements": ["..."],
-        "suggested_supporting_evidence": ["..."]
+        "suggested_supporting_evidence": ["..."],
+        "risk": "High | Medium | Low",
         }}
         """
         response = RFEBOT.reponseParser(llm2(prompt))
@@ -417,6 +443,8 @@ class RFEBOT:
 
     @staticmethod
     def AgenticCriterionPrompt4(petitionContent: str) -> Dict:
+        print("Calling the 4th Criterion Agent...")
+
         prompt: str = f"""You are a USCIS Officer reviewing an EB-1A petition. Your task is to evaluate whether the petitioner satisfies **Criterion 4**: "Evidence of the beneficiary's participation, either individually or on a panel, as a judge of the work of others in the same or an allied field of specialization for which classification is sought."
 
         <petitionContent>
@@ -451,8 +479,13 @@ class RFEBOT:
         6. Recommend `suggested_supporting_evidence` such as:
          Copies or screenshots of review requests and confirmations
          Proof of judging (e.g. thank-you letters, portal screenshots)
-         Descriptions or links showing the relevance of the judged material to the beneficiary’s field
+         Descriptions or links showing the relevance of the judged material to the beneficiary's field
          Statements or credentials showing how the reviewed field is allied
+
+        7. In `risk`, classify the overall risk of this criterion being denied as `"High"`, `"Medium"`, or `"Low"` based on the strength of evidence.  
+        - `"High"` if the evidence is weak, general, or missing key elements.  
+        - `"Medium"` if some evidence exists but lacks strong support or clear documentation.  
+        - `"Low"` if the evidence is strong, well-documented, and clearly meets USCIS standards.
 
         You must **ALWAYS** Return the result in the following JSON format. Do not include commentary outside the structure.
 
@@ -471,7 +504,8 @@ class RFEBOT:
         ],
         "overall_reasoning": "...",
         "missing_elements": ["..."],
-        "suggested_supporting_evidence": ["..."]
+        "suggested_supporting_evidence": ["..."],
+        "risk": "High | Medium | Low",
         }}
         """
         response = RFEBOT.reponseParser(llm2(prompt))
@@ -479,6 +513,8 @@ class RFEBOT:
 
     @staticmethod
     def AgenticCriterionPrompt5(petitionContent: str) -> Dict:
+        print("Calling the 5th Criterion Agent...")
+
         prompt: str = f"""You are a USCIS Officer reviewing an EB-1A petition. Your task is to evaluate whether the petitioner satisfies **Criterion 5**: "Evidence of the beneficiary's original scientific, scholarly, artistic, athletic, or business-related contributions of major significance in the field."
 
         <petitionContent>
@@ -520,6 +556,12 @@ class RFEBOT:
          Patent citations or commercial impact data
          Screenshots, links, or media articles referencing the innovation
 
+        10. In `risk`, classify the overall risk of this criterion being denied as `"High"`, `"Medium"`, or `"Low"` based on the strength of evidence.  
+        - `"High"` if the evidence is weak, general, or missing key elements.  
+        - `"Medium"` if some evidence exists but lacks strong support or clear documentation.  
+        - `"Low"` if the evidence is strong, well-documented, and clearly meets USCIS standards.
+
+
         ALWAYS Return only the JSON object. Do not include any commentary or explanations outside the structure.
 
         {{
@@ -539,7 +581,8 @@ class RFEBOT:
         ],
         "overall_reasoning": "...",
         "missing_elements": ["..."],
-        "suggested_supporting_evidence": ["..."]
+        "suggested_supporting_evidence": ["..."],
+        "risk": "High | Medium | Low",
         }}
         """
         llm2_response = llm2(prompt)
@@ -548,6 +591,7 @@ class RFEBOT:
 
     @staticmethod
     def AgenticCriterionPrompt6(petitionContent: str) -> Dict:
+        print("Calling the 6th Criterion Agent...")
         prompt: str = f"""You are a USCIS Officer reviewing an EB-1A petition. Your task is to evaluate whether the petitioner satisfies **Criterion 6**: "Evidence of the beneficiary's authorship of scholarly articles in the field, in professional or major trade publications or other major media."
                 
         <petitionContent>
@@ -595,6 +639,12 @@ class RFEBOT:
          Circulation or ranking data from third-party journal databases
          Expert testimony confirming academic nature and journal prestige
 
+        8. In `risk`, classify the overall risk of this criterion being denied as `"High"`, `"Medium"`, or `"Low"` based on the strength of evidence.  
+        - `"High"` if the evidence is weak, general, or missing key elements.  
+        - `"Medium"` if some evidence exists but lacks strong support or clear documentation.  
+        - `"Low"` if the evidence is strong, well-documented, and clearly meets USCIS standards.
+
+
         Return only the JSON object. Do not include any commentary or explanations outside the structure.
 
         {{
@@ -613,7 +663,8 @@ class RFEBOT:
         ],
         "overall_reasoning": "...",
         "missing_elements": ["..."],
-        "suggested_supporting_evidence": ["..."]
+        "suggested_supporting_evidence": ["..."],
+        "risk": "High | Medium | Low",
         }}
         """
         llm2_response = llm2(prompt)
@@ -622,6 +673,7 @@ class RFEBOT:
 
     @staticmethod
     def AgenticCriterionPrompt7(petitionContent: str) -> Dict:
+        print("Calling the 7th Criterion Agent...")
         prompt: str = f"""You are a USCIS Officer reviewing an EB-1A petition. Your task is to evaluate whether the petitioner satisfies **Criterion 7**:  **"Evidence of the display of the beneficiary's work in the field at artistic exhibitions or showcases."**
                 
         <petitionContent>
@@ -666,6 +718,12 @@ class RFEBOT:
          Provide documentation about the venue's reputation as an artistic showcase
          Submit promotional flyers, press articles, or social media posts by the venue
 
+        8. In `risk`, classify the overall risk of this criterion being denied as `"High"`, `"Medium"`, or `"Low"` based on the strength of evidence.  
+        - `"High"` if the evidence is weak, general, or missing key elements.  
+        - `"Medium"` if some evidence exists but lacks strong support or clear documentation.  
+        - `"Low"` if the evidence is strong, well-documented, and clearly meets USCIS standards.
+
+
         Return the result in the following JSON format. Do not include any commentary or explanations outside the structure.
         {{
         "meets_criterion_7": true | false,
@@ -682,7 +740,8 @@ class RFEBOT:
         ],
         "overall_reasoning": "...",
         "missing_elements": ["..."],
-        "suggested_supporting_evidence": ["..."]
+        "suggested_supporting_evidence": ["..."],
+        "risk": "High | Medium | Low",
         }}
         """
         response = RFEBOT.reponseParser(llm2(prompt))
@@ -690,6 +749,7 @@ class RFEBOT:
 
     @staticmethod
     def AgenticCriterionPrompt8(petitionContent: str) -> Dict:
+        print("Calling the 8th Criterion Agent...")
         prompt: str = f"""You are a USCIS Officer reviewing an EB-1A petition. Your task is to evaluate whether the petitioner satisfies **Criterion 8**:  **"Evidence that the beneficiary has performed in a leading or critical role for organizations or establishments that have a distinguished reputation."**
 
         <petitionContent>
@@ -731,6 +791,12 @@ class RFEBOT:
          Provide company press coverage, public financial data, industry ranking
          Clarify the unique significance of the ' contribution vs. others
 
+        6. In `risk`, classify the overall risk of this criterion being denied as `"High"`, `"Medium"`, or `"Low"` based on the strength of evidence.  
+        - `"High"` if the evidence is weak, general, or missing key elements.  
+        - `"Medium"` if some evidence exists but lacks strong support or clear documentation.  
+        - `"Low"` if the evidence is strong, well-documented, and clearly meets USCIS standards.
+
+
         ALWAYS Return the result in the following JSON format. Do not include any commentary or explanations outside the structure.
         {{
         "meets_criterion_8": true | false,
@@ -748,7 +814,8 @@ class RFEBOT:
         ],
         "overall_reasoning": "...",
         "missing_elements": ["..."],
-        "suggested_supporting_evidence": ["..."]
+        "suggested_supporting_evidence": ["..."],
+        "risk": "High | Medium | Low",
         }}
         """
         response = RFEBOT.reponseParser(llm2(prompt))
@@ -756,6 +823,7 @@ class RFEBOT:
 
     @staticmethod
     def AgenticCriterionPrompt9(petitionContent: str) -> Dict:
+        print("Calling the 9th Criterion Agent...")
         prompt: str = f"""You are a USCIS Officer reviewing an EB-1A petition. Your task is to evaluate whether the petitioner satisfies **Criterion 9**:  **"Evidence that the beneficiary has commanded a high salary or other significantly high remuneration for services, in relation to others in the field."**
 
         <petitionContent>
@@ -792,6 +860,12 @@ class RFEBOT:
          Provide industry-wide salary comparison charts
          Submit compensation data from DOL, Glassdoor, PayScale, etc.
          Add letters from employers justifying above-market compensation
+        
+        6. In `risk`, classify the overall risk of this criterion being denied as `"High"`, `"Medium"`, or `"Low"` based on the strength of evidence.  
+        - `"High"` if the evidence is weak, general, or missing key elements.  
+        - `"Medium"` if some evidence exists but lacks strong support or clear documentation.  
+        - `"Low"` if the evidence is strong, well-documented, and clearly meets USCIS standards.
+
 
         ALWAYS Return the result in the following JSON format. Do not include any commentary or explanations outside the structure.
 
@@ -810,7 +884,8 @@ class RFEBOT:
         ],
         "overall_reasoning": "...",
         "missing_elements": ["..."],
-        "suggested_supporting_evidence": ["..."]
+        "suggested_supporting_evidence": ["..."],
+        "risk": "High | Medium | Low",
         }}
         """
         response = RFEBOT.reponseParser(llm2(prompt))
@@ -818,6 +893,7 @@ class RFEBOT:
 
     @staticmethod
     def AgenticCriterionPrompt10(petitionContent: str) -> Dict:
+        print("Calling the 10th Criterion Agent...")
         prompt: str = f"""You are a USCIS Officer reviewing an EB-1A petition. Your task is to evaluate whether the petitioner satisfies **Criterion 10**:  **"Evidence of commercial successes in the performing arts, as shown by box office receipts or record, cassette, compact disk, or video sales."**
 
         <petitionContent>
@@ -857,6 +933,12 @@ class RFEBOT:
          Provide music or video sales reports (e.g., Nielsen, Spotify, Billboard, iTunes)
          Include industry comparisons showing top percentile revenue
 
+        6. In `risk`, classify the overall risk of this criterion being denied as `"High"`, `"Medium"`, or `"Low"` based on the strength of evidence.  
+        - `"High"` if the evidence is weak, general, or missing key elements.  
+        - `"Medium"` if some evidence exists but lacks strong support or clear documentation.  
+        - `"Low"` if the evidence is strong, well-documented, and clearly meets USCIS standards.
+
+
         ALWAYS Return the result in the following JSON format. Do not include any commentary or explanations outside the structure.
 
         {{
@@ -873,7 +955,8 @@ class RFEBOT:
         ],
         "overall_reasoning": "...",
         "missing_elements": ["..."],
-        "suggested_supporting_evidence": ["..."]
+        "suggested_supporting_evidence": ["..."],
+        "risk": "High | Medium | Low",
         }}
         """
         response = RFEBOT.reponseParser(llm2(prompt))
