@@ -2,7 +2,7 @@
 
 - Clone this repo:
 ```console
-https://github.com/werayco/visacompanion_RFE_Analyzer.git
+git clone https://github.com/werayco/visacompanion_RFE_Analyzer.git
 
 ```
 - Navigate to the working directory
