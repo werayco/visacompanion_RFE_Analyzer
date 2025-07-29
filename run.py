@@ -5,7 +5,6 @@ from typing import TypedDict, Any, Dict, Optional
 import time
 
 
-
 class SelectedCriterion(TypedDict, total=False):
     internationalAward: Optional[Dict[str, Any]]
     Criterion1Result: Optional[Dict[str, Any]]
@@ -106,8 +105,8 @@ def main(file_path: str) -> Dict[str, Any]:
 # end = time.time()
 # print(f"The analysis took approximately {end - start:.2f} seconds to complete.")
 
-start = time.time()
-result = utils.JsonLoader(r"./result.json")
-utils.CriterionDocCreator(result)
-end = time.time()
-print(f"The analysis took approximately {end - start:.2f} seconds to complete.")
+# start = time.time()
+# result = utils.JsonLoader(r"./result.json")
+# utils.CriterionDocCreator(result)
+# end = time.time()
+# print(f"The analysis took approximately {end - start:.2f} seconds to complete.")

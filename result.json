@@ -2,22 +2,21 @@
   "internationalAward": {
     "has_major_award": false,
     "award_names": [
-      "Google Developer Expert"
+      "Google Developer Expert",
+      "Digital Breakthrough hackathon, 3rd place"
     ],
-    "justification": "The 'Google Developer Expert' award mentioned in the petition does not appear to qualify as a major, internationally recognized award. While it is a prestigious designation within the software development field, it lacks the broad international recognition and public familiarity of awards like the Nobel Prize, Olympic medals, or Pulitzer Prize. The petition does not provide evidence that this award attracts worldwide competition, has been widely reported in top international media, or includes a large cash prize.",
+    "justification": "The petition mentions two awards received by the beneficiary: 'Google Developer Expert' and 3rd place in the 'Digital Breakthrough' hackathon. However, these do not appear to meet the bar of a major, internationally recognized award. While the 'Google Developer Expert' title is prestigious within the field of software development, it lacks the broad international recognition and public familiarity of awards like the Nobel Prize or Olympic medals. The hackathon award, while nationally recognized in Russia, does not demonstrate international stature.",
     "missing_elements": [
-      "Broad international recognition beyond the field",
-      "Worldwide competition for the award",
-      "Extensive reporting in top international media",
-      "Familiarity of the award name to the general public",
-      "Large cash prize component"
+      "Evidence of the awards attracting worldwide competition",
+      "Reports of the awards in major international media",
+      "Indications that the awards are widely familiar to the general public",
+      "Mention of significant cash prizes associated with the awards"
     ],
     "suggested_supporting_evidence": [
-      "Documentation of the award's international prestige and name recognition, such as media articles or industry publications discussing its significance",
-      "Evidence of the global scope of competition for the award, such as data on the number and diversity of applicants",
-      "Examples of major international media coverage of the award and its recipients",
-      "Testimonials or statements from field experts attesting to the award's reputation as one of the top honors in the field worldwide",
-      "Information on any cash prizes or grants associated with the award"
+      "Media articles from top international outlets discussing the stature and impact of the awards",
+      "Documentation showing the global scope of competitors for the awards",
+      "Testimonials from field experts attesting to the international reputation and prestige of the awards",
+      "Evidence of any large monetary prizes or other benefits conferred to award recipients"
     ]
   },
   "Criterion1Result": {
@@ -26,25 +25,18 @@
       "Google Developer Expert",
       "'Digital Breakthrough' hackathon, 3rd place, team competition"
     ],
-    "reasoning": "The petition provides strong evidence that the Google Developer Expert award and 3rd place in the 'Digital Breakthrough' hackathon meet the criterion. For the Google Developer Expert award, the petition demonstrates it is an internationally recognized award granted by Google to top experts in their technologies based on significant contributions and expertise. Geographic scope is worldwide, selection criteria are high achievements and solid expertise, and the award is very prestigious with only about 1000 recipients total and 105 in the beneficiary's specific Flutter technology. For the 'Digital Breakthrough' hackathon award, the petition shows it is a nationally recognized award in Russia based on excellence in software development. Detailed information is provided on selection criteria, national scope, organizing body reputation, and media coverage.",
+    "reasoning": "The petition provides strong evidence that the Google Developer Expert award and 3rd place in the 'Digital Breakthrough' hackathon are nationally or internationally recognized awards for excellence in the beneficiary's field of software development:    Google Developer Expert:   - Internationally recognized by Google, a global leader in technology    - Granted to only about 0.025% of developers using Google's Flutter technology worldwide based on expertise and significant contributions   - Provides access to Google events and product teams, indicating high prestige   - Recognized beyond Google by other industry leaders like JetBrains   - More LinkedIn followers than the Academy of Motion Picture Arts and Sciences (Oscars), showing high interest    'Digital Breakthrough' 3rd Place:    - National competition in Russia with no geographic limits on participants   - Judging criteria focused on software prototype, problem solving, development, implementation, UI/UX, indicating granted for excellence     - Organized by 'Russia - Land of Opportunity', a prestigious non-profit established by presidential decree   - Media coverage by national TV",
     "issues_detected": [],
-    "missing_elements": [
-      "Annual recipient numbers for the 'Digital Breakthrough' hackathon award",
-      "Notable past winners for both awards"
-    ],
-    "suggested_supporting_evidence": [
-      "Media announcements or coverage of the Google Developer Expert award",
-      "Documentation on annual recipient numbers for the 'Digital Breakthrough' hackathon",
-      "List of notable past recipients of both awards, if available"
-    ]
+    "missing_elements": [],
+    "suggested_supporting_evidence": []
   },
   "Criterion2Result": {
     "meets_criterion_2": true,
     "association_names": [
-      "Institute of Electrical and Electronics Engineers (IEEE), Senior Membership",
-      "Google Developer Experts (GDE) Membership"
+      "Institute of Electrical and Electronics Engineers (IEEE) - Senior Member",
+      "Google Developer Experts (GDE) - Dart & Flutter Expert"
     ],
-    "reasoning": "The petition provides strong evidence that the beneficiary's memberships in IEEE at the Senior level and in the Google Developer Experts program meet Criterion 2. For IEEE Senior Membership, the petition establishes that IEEE is a distinguished professional association in the beneficiary's field, Senior Membership requires at least 5 years of significant performance and is the highest level one can apply for, and applications are judged by recognized experts in the field. For Google Developer Experts, the petition shows this program requires outstanding expertise and significant contributions to the field, putting the beneficiary in the top 0.025% of Flutter developers worldwide. The selection process involves interviews with existing Experts and Google employees, who are recognized experts.",
+    "reasoning": "The petition provides strong evidence that Mr. Inkin meets Criterion 2 through his membership in IEEE at the Senior level and in the Google Developer Experts program as a Dart & Flutter Expert. For IEEE Senior Membership, the petition establishes that IEEE is a distinguished association in the field of engineering and computer science, that Senior Membership requires at least 10 years of professional experience with 5 years of significant performance, and that applications are judged by panels of current Senior Members and Fellows who are recognized experts. For Google Developer Experts, the petition shows this program requires solid expertise and significant contributions to the field, with a rigorous multi-stage review process involving current Experts and Google employees. Both memberships are presented as highly selective and prestigious.",
     "issues_detected": [],
     "missing_elements": [],
     "suggested_supporting_evidence": []
@@ -52,16 +44,16 @@
   "Criterion3Result": {
     "meets_criterion_3": false,
     "published_materials": [],
-    "overall_reasoning": "The petition does not include any published materials about the beneficiary or the beneficiary's work. The content focuses on the beneficiary's own blog posts and articles, which are self-published and promotional in nature rather than independent journalistic coverage. There is no evidence that the publications featuring the beneficiary's articles are professional, major trade publications or major media outlets.",
+    "overall_reasoning": "The petition does not include any published materials about the beneficiary or the beneficiary's work. To satisfy this criterion, the petitioner would need to provide examples of published material that is specifically about the beneficiary and their work in the field of software development. The publications should be professional or major trade publications or other major media outlets.",
     "missing_elements": [
-      "Published materials about the beneficiary from professional, major trade publications or major media outlets",
-      "Evidence of the reach, audience and journalistic nature of the publications",
-      "In-depth, substantive coverage focusing on the beneficiary's specific achievements and impact in the field"
+      "No published materials provided",
+      "No information about publication name, date, author, circulation, audience, etc."
     ],
     "suggested_supporting_evidence": [
-      "Articles from well-known industry or general interest publications that profile the beneficiary and analyze his work and influence in the field",
-      "Media kits or reports showing the reach and audience of the publications",
-      "Evidence that the articles represent independent journalistic coverage, not promotional or sponsored content"
+      "Articles from major technology publications or general media outlets that focus on the beneficiary's specific software development achievements",
+      "Screenshots or scans showing the full articles, publication names, dates, and authors",
+      "Media kits or reports demonstrating the publication's circulation, reach, and intended audience",
+      "Evidence the articles represent independent journalistic reporting, not promotional or marketing content"
     ]
   },
   "Criterion4Result": {
@@ -77,7 +69,7 @@
         "issues": []
       }
     ],
-    "overall_reasoning": "The evidence shows that in November 2023, Mr. Inkin served on the IEEE Senior Member Application Review Panel, where he judged 11 applications for the IEEE Senior Membership grade. The fields covered by IEEE, including computer sciences and information technology, are the same as or allied to Mr. Inkin's field of software development. The petition provides an email invitation, confirmation of Mr. Inkin's registration, screenshots of the applications he reviewed, and a thank you letter from the IEEE Admission and Advancement Committee Chair. This sufficiently demonstrates that Mr. Inkin participated as a judge of the work of others in the same or an allied field.",
+    "overall_reasoning": "The evidence shows that in November 2023, Mr. Inkin served as a panel member reviewing applications for the IEEE Senior Membership grade. IEEE's designated fields include 'Computer sciences and information technology', which is Mr. Inkin's field of Software Development. Therefore, this judging activity was in the same or an allied field to Mr. Inkin's area of expertise.",
     "missing_elements": [],
     "suggested_supporting_evidence": []
   },
@@ -85,37 +77,39 @@
     "meets_criterion_5": true,
     "contributions": [
       {
-        "title_or_description": "Improvement to PHPStan, the most popular static analyzer for PHP programming language",
+        "title_or_description": "PHPStan improvement",
         "field_of_contribution": "Software Development",
         "type_of_contribution": "scientific",
         "is_original": true,
         "is_major_significance": true,
         "evidence_summary": [
-          "Supporting letters from PHP experts detailing the problem and impact of the contribution",
-          "Download statistics showing over 131 million downloads of PHPStan after the contribution",
-          "Comparison of GitHub stars showing PHPStan has 1/3 the stars of PHP language itself"
+          "Mr. Inkin developed and contributed the ability to merge doc comments while preserving type information in PHPStan, the most popular static code analyzer for PHP",
+          "Letters from PHP experts detailing how this feature reduced false positive errors, removed need for redundant comments, and allowed PHPStan to be adopted in large projects",
+          "Download statistics showing PHPStan has been downloaded over 131 million times since Mr. Inkin's contribution"
         ],
         "recognized_by_field": true,
-        "impact_summary": "The contribution significantly reduced false-positive errors reported by PHPStan and made it suitable for adoption in large projects across the PHP industry, which powers over 76% of websites worldwide. It resulted in improved code quality and stability in the industry.",
+        "impact_summary": "Mr. Inkin's contribution to PHPStan significantly reduced false positive errors reported by the analyzer and the need for redundant code comments. This allowed the tool to be widely adopted in the PHP industry, which powers over 76% of websites worldwide, resulting in improved code quality and stability of projects at companies of all sizes.",
         "issues": []
       },
       {
-        "title_or_description": "Flutter Code Editor, a code editor for Flutter apps with advanced features",
+        "title_or_description": "Flutter Code Editor",
         "field_of_contribution": "Software Development",
         "type_of_contribution": "scientific",
         "is_original": true,
         "is_major_significance": true,
         "evidence_summary": [
-          "Supporting letters from Akvelon and Google detailing the leading role and impact",
-          "Ranking as 2nd most popular code editor for Flutter",
-          "Usage in major apps like Apache Beam Playground with over 7000 GitHub stars"
+          "Mr. Inkin led the development of Flutter Code Editor at Akvelon with features like code folding, error highlighting, autocomplete, and search",
+          "Letter from Akvelon executive describing Mr. Inkin's leading and critical role",
+          "Letter from code editor expert detailing how the features led to a paradigm shift allowing more work to be done directly in Flutter apps",
+          "Popularity metrics showing it is the 2nd most popular code editor package for Flutter",
+          "Usage in prominent apps like Apache Beam Playground, Tour of Beam, network_proxy_flutter, and Miru"
         ],
         "recognized_by_field": true,
-        "impact_summary": "The editor enables advanced programming features directly in Flutter apps that were previously only possible in desktop IDEs. This streamlines development, decreases dependency on desktop, and makes more tasks achievable on mobile devices. It is already widely adopted.",
+        "impact_summary": "The features developed by Mr. Inkin in Flutter Code Editor streamlined work, decreased dependency on desktop computers, and made more programming tasks achievable on mobile devices. The editor has become widely adopted, being the 2nd most popular code editor in the Flutter ecosystem, and is used in online IDEs, configuration editors, and other apps.",
         "issues": []
       }
     ],
-    "overall_reasoning": "The two contributions of Mr. Inkin - the improvement to PHPStan and the Flutter Code Editor - are both original works that have had major significance and impact in the field of software development. The PHPStan contribution enabled the tool's adoption across the PHP industry that powers most websites, resulting in improved code quality. The Flutter Code Editor is a leading solution enabling advanced programming in Flutter apps. Both works are recognized by experts and widely adopted.",
+    "overall_reasoning": "The evidence shows Mr. Inkin made at least two original scientific contributions of major significance to the field of Software Development. His improvement to PHPStan significantly reduced false positives and need for redundant code comments, allowing the tool to be widely adopted and improving code quality across the PHP industry that powers most websites. His work on Flutter Code Editor introduced novel features that changed the paradigm of Flutter development, making the editor the 2nd most popular and enabling more development directly in Flutter apps. Expert letters, popularity metrics, download statistics, and real-world usage confirm the importance and impact of these contributions, satisfying the criterion.",
     "missing_elements": [],
     "suggested_supporting_evidence": []
   },
@@ -131,10 +125,11 @@
         "publication_is_major": true,
         "evidence_summary": [
           "Article was 'boosted' by Medium's curation team for wider distribution",
-          "Article has over 1000 'claps' (likes) on Medium"
+          "Article has over 1000 'claps' (likes) on Medium",
+          "Medium is a major online publishing platform"
         ],
         "issues": [
-          "Medium is a blogging platform, not a professional journal or trade publication",
+          "Medium is a self-publishing platform, not a professional journal or trade publication",
           "No evidence of a formal peer-review process"
         ]
       },
@@ -146,121 +141,44 @@
         "peer_reviewed": false,
         "publication_is_major": false,
         "evidence_summary": [
-          "FlutterDevs LinkedIn blog has over 95,000 followers, more than most top Flutter groups"
+          "FlutterDevs LinkedIn blog has over 95,000 followers",
+          "FlutterDevs is a company that develops Flutter applications"
         ],
         "issues": [
-          "A LinkedIn blog post is not a formal article in a professional or major trade publication",
-          "No evidence of editorial oversight or peer-review"
+          "A company blog post is not a formal article in a professional or major trade publication",
+          "No evidence of peer-review or editorial process"
         ]
       }
     ],
-    "overall_reasoning": "While the petitioner has authored technical articles that were selected for wider distribution, they were published on blogging and social media platforms rather than in scholarly journals, professional publications or major media outlets. The articles, while dealing with academic subject matter, lack evidence of formal peer-review or editorial processes expected of articles qualifying under this criterion.",
+    "overall_reasoning": "While the petitioner has authored technical articles that were selected for wider distribution on major online platforms, they do not qualify as scholarly articles in professional journals, major trade publications, or other major media. The articles lack evidence of formal peer-review and do not appear in established professional or trade publications in the petitioner's field.",
     "missing_elements": [
-      "No submitted articles from peer-reviewed scholarly journals",
-      "No articles in established professional or major trade publications",
-      "Lack of evidence regarding editorial oversight or peer-review of published articles"
+      "Proof the articles underwent peer-review",
+      "Evidence the publishing platforms are considered professional journals or major trade publications in the field"
     ],
     "suggested_supporting_evidence": [
-      "Published articles in IEEE, ACM or similar peer-reviewed journals in the petitioner's field",
-      "Articles in widely-circulated industry publications like InfoWorld, Ars Technica, etc.",
-      "Expert letters confirming the academic nature and reputability of the blogs/platforms",
-      "Documentation of any peer-review or editorial processes prior to publication of the articles"
+      "Documentation showing a formal peer-review or editorial selection process for the articles",
+      "Expert letters testifying that Medium and LinkedIn are considered major publications in the software development field",
+      "Circulation data or ranking info showing the reach and influence of Medium and the FlutterDevs blog"
     ]
   },
   "Criterion7Result": {
     "meets_criterion_7": false,
     "exhibitions": [],
-    "overall_reasoning": "The petition does not include any evidence of the petitioner's work being displayed at artistic exhibitions or showcases. The petitioner's background is in software development, and the exhibits focus on his technical achievements and contributions to the field. However, there is no mention of any of his work being featured in artistic venues, either physical or virtual.",
+    "overall_reasoning": "The provided petition does not contain any evidence of the beneficiary's work being displayed at artistic exhibitions or showcases. The petition focuses on the beneficiary's achievements in software development, but does not mention any artistic works or exhibitions.",
     "missing_elements": [
-      "No examples provided of the petitioner's work being displayed at artistic exhibitions or showcases",
-      "No documentation proving any venues qualify as legitimate artistic exhibitions or showcases",
-      "No evidence linking any displayed works to the petitioner as the creator"
+      "No information provided about any artistic works created by the beneficiary",
+      "No documentation of the beneficiary's work being displayed at any venues",
+      "No evidence that the beneficiary participated in artistic exhibitions or showcases"
     ],
     "suggested_supporting_evidence": [
-      "If applicable, submit photographs, videos, or catalogs showing the petitioner's work on display at artistic exhibitions or showcases",
-      "Provide event brochures, gallery announcements, or other promotional materials for any artistic venues where the petitioner's work was featured",
-      "Include press coverage, critical reviews, or curatorial statements related to exhibitions of the petitioner's work",
-      "Submit artist statements, interviews, or expert testimony confirming the petitioner's authorship of works shown at artistic exhibitions or showcases"
+      "If applicable, submit documentation of any artistic works created by the beneficiary, such as photographs, videos, or descriptions",
+      "Provide evidence of the beneficiary's work being displayed at recognized artistic venues, such as galleries, museums, conferences, or curated online platforms",
+      "Include promotional materials, press coverage, exhibition catalogs or brochures confirming the beneficiary's participation in artistic showcases",
+      "Provide statements or testimony from the beneficiary or knowledgeable experts confirming the beneficiary's authorship of displayed artistic works"
     ]
   },
   "Criterion8Result": {
-    "meets_criterion_8": true,
-    "organizations": [
-      {
-        "name": "The Apache Software Foundation",
-        "beneficiary_role": "Frontend developer for Apache Beam",
-        "is_leading_or_critical": true,
-        "role_explanation": "Mr. Inkin led the frontend development of two critical applications for Apache Beam - Beam Playground and Tour of Beam. His work was central to completing these projects on time for a major conference.",
-        "distinguished_reputation": true,
-        "reputation_evidence": [
-          "Established in 1999",
-          "Supports major open source projects like Apache Hadoop",
-          "Sponsors include Microsoft, Google, Yahoo, Facebook, IBM, Visa",
-          "850+ individual members, 8200+ committers, thousands of software solutions"
-        ],
-        "supporting_documents": [
-          "Letter from <Apache Member> confirming Mr. Inkin's leading and critical role",
-          "Wikipedia page establishing Apache Software Foundation's prominence",
-          "Annual report showing sponsors and scale of the foundation"
-        ],
-        "issues": []
-      },
-      {
-        "name": "Akvelon",
-        "beneficiary_role": "Lead Flutter Developer",
-        "is_leading_or_critical": true,
-        "role_explanation": "Mr. Inkin led the development of a reusable code editor component in Flutter that became widely used. He designed the architecture and reviewed code from other developers.",
-        "distinguished_reputation": true,
-        "reputation_evidence": [
-          "23+ years old company with 1200+ employees and 15 global offices",
-          "Clients include Google and Microsoft",
-          "21 approved H-1B petitions in 2018 demonstrating USCIS recognition"
-        ],
-        "supporting_documents": [
-          "Letter from <Akvelon Officer> detailing Mr. Inkin's leading role",
-          "Screenshots listing Mr. Inkin as Lead Flutter Developer",
-          "About Us page establishing company scale and client list"
-        ],
-        "issues": []
-      },
-      {
-        "name": "Calltouch",
-        "beneficiary_role": "Senior PHP Developer",
-        "is_leading_or_critical": true,
-        "role_explanation": "Mr. Inkin was in charge of the authentication system, finding and fixing critical security vulnerabilities. He improved code quality tools leading to reduced downtime.",
-        "distinguished_reputation": true,
-        "reputation_evidence": [
-          "Approximately $11.3 million revenue in 2019",
-          "Largest marketing analytics acquisition in Russia"
-        ],
-        "supporting_documents": [
-          "Letter from <Calltouch Officer> explaining the critical nature of Mr. Inkin's work",
-          "News article in reputable Vedomosti newspaper citing Calltouch's revenue"
-        ],
-        "issues": []
-      },
-      {
-        "name": "Sergey Gran's School",
-        "beneficiary_role": "Chief Technology Officer",
-        "is_leading_or_critical": true,
-        "role_explanation": "As CTO, Mr. Inkin implemented IT solutions that allowed the company to scale to over 2500 students and 100 teachers, increasing revenue fourfold.",
-        "distinguished_reputation": true,
-        "reputation_evidence": [
-          "Over 1.2 million YouTube views",
-          "16,000 social media followers",
-          "National TV coverage of school's methodology and products in Kyrgyzstan and Russia"
-        ],
-        "supporting_documents": [
-          "Letter from owner Sergey Gran detailing Mr. Inkin's impact as CTO",
-          "Screenshots of YouTube and social media metrics",
-          "Transcripts of TV segments featuring the school"
-        ],
-        "issues": []
-      }
-    ],
-    "overall_reasoning": "The evidence demonstrates that Mr. Inkin performed in leading or critical roles for at least four organizations with distinguished reputations. Letters from senior officials detail his high-level responsibilities and significant contributions. The organizations' prominence is well-established through financial data, media coverage, industry standing and government recognition.",
-    "missing_elements": [],
-    "suggested_supporting_evidence": []
+    "status": "couldn't parse the content"
   },
   "Criterion9Result": {
     "meets_criterion_9": true,
@@ -268,22 +186,21 @@
       {
         "year": "2022 Q3 - 2023 Q2",
         "salary_amount": "167014.90 GEL (equivalent to 62047.62 USD)",
-        "source": "Response from Revenue Service of Georgia",
+        "source": "Response from Revenue Service of Georgia showing salary before taxes",
         "comparison_evidence_provided": true,
         "is_significantly_high": true,
         "supporting_documents": [
           "Employment contract with Akvelon showing monthly salary",
-          "Agreement on termination of employment showing last day",
-          "Bank statement showing salary deposits after tax",
-          "Response from Revenue Service of Georgia showing total salary before tax",
-          "Currency exchange rate from National Bank of Georgia",
+          "Agreement on termination of the employment contract showing end date",
+          "Bank statement showing salary deposits after taxes",
+          "Response from Revenue Service of Georgia showing total salary before taxes",
           "Forbes Georgia article showing median IT salary in Georgia in 2022",
-          "National Statistics Office of Georgia data on average salaries"
+          "National Statistics Office of Georgia data on average salaries for computer programming"
         ],
         "issues": []
       }
     ],
-    "overall_reasoning": "The petition provides strong evidence that Mr. Inkin commanded a high salary relative to others in his field while working at Akvelon in Georgia from 2022 Q3 to 2023 Q2. His annual salary of 167014.90 GEL (equivalent to 62047.62 USD) is shown to be 3 times the median IT salary in Georgia in 2022 according to Forbes, and 2.02 times the average salary for 'Computer programming, consultancy and related activities' occupational category reported by the National Statistics Office of Georgia for the exact same period. The salary amount is well supported by official tax and bank records. No issues or gaps in evidence were identified.",
+    "overall_reasoning": "The petition provides strong evidence that Mr. Inkin commanded a high salary relative to others in his field while working at Akvelon in Georgia from 2022-2023. His annual salary of 167,014.90 GEL (62,047.62 USD) is shown to be 3 times higher than the 2022 median IT salary in Georgia according to Forbes, and 2.02 times higher than the average salary for computer programmers according to official government statistics for the exact quarters he was employed. The salary amount is well supported by his employment contract, bank statements, and tax records. Authoritative comparative salary data is provided from both private (Forbes) and government (National Statistics Office) sources to demonstrate the salary was significantly high for the field and region.",
     "missing_elements": [],
     "suggested_supporting_evidence": []
   },
@@ -297,21 +214,20 @@
       "No comparative data to show success is significant in the performing arts industry"
     ],
     "suggested_supporting_evidence": [
-      "Submit evidence of the beneficiary's participation in performing arts, such as movies, music, theater, etc.",
-      "Provide box office statements, record sales reports, or similar financial data for the beneficiary's performing arts works",
-      "Include industry comparisons showing the beneficiary's works rank highly in sales or revenue compared to peers"
+      "If the beneficiary has been involved in commercially successful performing arts, submit box office statements, ticketing reports, or other verified sales totals",
+      "Provide official music or video sales reports from recognized industry sources (e.g., Nielsen, Spotify, Billboard, iTunes) showing the beneficiary's sales volume",
+      "Include industry comparisons and percentile rankings demonstrating the beneficiary's success is significant compared to performing arts industry benchmarks"
     ]
   },
   "summary": {
     "qualification_path": "ten_criteria",
     "criteria_needed": 3,
-    "criteria_met": 6,
+    "criteria_met": 5,
     "met_criteria": [
       "Criterion1Result",
       "Criterion2Result",
       "Criterion4Result",
       "Criterion5Result",
-      "Criterion8Result",
       "Criterion9Result"
     ],
     "processed_criteria": [
@@ -331,55 +247,27 @@
     "early_qualification": false
   },
   "recognizable_components": {
-    "personal_background": "Mr. Inkin graduated with honors from Nizhny Novgorod State Technical University with a Bachelor's degree and an Engineer's degree in Information Technology. In his 19 year career, he has worked in backend software development with PHP and frontend development with Flutter. He has held roles as a CTO, senior developer, and lead developer at companies in Russia, the UK, and Georgia.",
+    "personal_background": "Mr. Inkin graduated with honors from Nizhny Novgorod State Technical University with a Bachelor's degree and an Engineer's degree in Information Technology. He has 19 years of experience in backend software development with PHP and frontend development with Flutter. His work history includes roles as a Chief Technology Officer, Senior PHP Developer, and Lead Flutter Developer at various companies in Russia, the UK, and Georgia.",
     "expert_recommendation_letters": [
       "A supporting letter from Google states that Mr. Inkin is part of the Google Developer Experts community, a global network of highly experienced technology experts. He is one of about 105 Dart & Flutter technology experts out of nearly a thousand total experts worldwide.",
-      "A supporting letter from <Apache Member>, <Title at The Apache Software Foundation>, states that Mr. Inkin's frontend development work was central to completing two Apache Beam web applications used by over 3000 people.",
-      "A supporting letter from <Akvelon Officer>, <Title at Akvelon>, states that Mr. Inkin led the development of a Flutter code editor that became a valuable standalone product in addition to being used in the Apache Beam applications.",
-      "A supporting letter from <Calltouch Officer>, <Title at Calltouch>, states that Mr. Inkin made critical contributions to their authentication system and integrated static analysis into their deployment process, significantly improving product quality.",
-      "A supporting letter from Sergey Gran, owner of Sergey Gran's School, states that as CTO, Mr. Inkin implemented IT solutions that helped the company accelerate growth and increase revenue fourfold."
+      "A supporting letter from <Apache Member>, <Title at The Apache Software Foundation>, states that Mr. Inkin's frontend development work was central to the completion of two Apache Beam web applications used by over 3000 people.",
+      "A supporting letter from <Akvelon Officer>, <Title at Akvelon>, highlights Mr. Inkin's critical role in leading the development of Flutter Code Editor, a reusable code editor component with advanced features.",
+      "A supporting letter from <Calltouch Officer>, <Title at Calltouch>, describes Mr. Inkin's significant contributions in fixing critical vulnerabilities and improving authentication systems for their advertising analytics platform.",
+      "A supporting letter from Sergey Gran, owner of Sergey Gran's School, credits Mr. Inkin's IT solutions for accelerating the company's growth and increasing revenues fourfold as Chief Technology Officer."
     ],
-    "evidence": {
-      "lesser_awards": [
-        "Mr. Inkin was awarded the title of Google Developer Expert in 2023. This award is granted together with membership in the Google Developer Experts program.",
-        "Mr. Inkin's '1DevFull' team placed 3rd in the iHerb case at the 'Digital Breakthrough' hackathon in 2021, a large nationally recognized competition in Russia."
-      ],
-      "association_membership": [
-        "Mr. Inkin is a Senior Member of Institute of Electrical and Electronics Engineers (IEEE), the largest professional association for engineers. The prestigious Senior Membership requires extensive significant performance over at least 5 years.",
-        "Mr. Inkin is a member of the 'Google Developer Experts' community. This membership requires outstanding achievements with about a thousand members total and just over 100 members specializing in Flutter, putting him in the top 0.025% of active Flutter developers."
-      ],
-      "published_material": [],
-      "judging_work_of_others": [
-        "Mr. Inkin was invited to judge new applicants to Senior Membership of IEEE and received a Thank You letter from the chair of the committee that reviews the applications and promotes members."
-      ],
-      "original_contributions": [
-        "Mr. Inkin designed and implemented a major feature in PHPStan, the most popular static analyzer of code in PHP programming language. This feature reduced false-positive errors reported by the analyzer and reduced the burden to correctly document code. This had a major effect since PHP powers the majority of websites worldwide.",
-        "Mr. Inkin led the development of 'Flutter Code Editor', which became the second most popular code editor for the Flutter framework and is used in many applications. It led to a paradigm shift allowing more development work to be done directly in Flutter apps."
-      ],
-      "scholarly_articles": [],
-      "artistic_display": [],
-      "leading_or_critical_role": [
-        "Mr. Inkin performed a critical role for The Apache Software Foundation, one of the largest open-source foundations. His frontend development work was central to completing two important applications, 'Apache Beam Playground' and 'Tour of Beam', in time for the annual Beam Summit conference in 2023.",
-        "For his employer Akvelon, Mr. Inkin led the development of a specialized Flutter code editor, which became a valuable product on its own in addition to being used in the Apache applications.",
-        "At his previous employer Calltouch, a large Russian advertising analytics platform, Mr. Inkin was in charge of the authentication system, finding and fixing critical security vulnerabilities.",
-        "As CTO for Sergey Gran's School from 2014-2016, Mr. Inkin implemented IT solutions that helped increase the company's revenues fourfold."
-      ],
-      "high_salary_or_remuneration": [
-        "During his employment at Akvelon in Georgia from 2022-2023, Mr. Inkin's salary was 3 times higher than the median IT salary in 2022 according to Forbes Georgia, and 2.02 times higher than the average salary for computer programming according to official statistics."
-      ],
-      "commercial_success_in_arts": []
-    },
+    "evidence": {},
     "media_and_judging_roles": [
-      "Mr. Inkin was invited to judge applications for the IEEE Senior Membership grade and reviewed 11 applications.",
-      "Mr. Inkin's team won 3rd place in the 'Digital Breakthrough' hackathon, a nationally recognized competition in Russia.",
-      "Mr. Inkin has authored 49 technical articles on Medium, 9 of which were curated for wider online publication by Medium's editors and other technology blogs with large followings."
+      "Mr. Inkin's '1DevFull' team placed 3rd in the 'Digital Breakthrough' hackathon, a nationally recognized competition in Russia.",
+      "Mr. Inkin was invited to judge applications for the IEEE Senior Membership grade. IEEE is the world's largest technical professional organization.",
+      "Mr. Inkin was approved to judge the 2024 CODiE Awards by the Software and Information Industry Association (SIIA). The CODiE Awards were previously known as the 'Oscars of Software'.",
+      "9 of Mr. Inkin's technical articles were curated for wider distribution on Medium, a major online publishing platform. One article was also featured in the Flutter Devs blog with 95,000 LinkedIn followers."
     ],
     "red_flags": {
-      "repetitive_language": "The petition does not appear to contain repetitive or boilerplate language in the recommendation letters. Each letter provides specific details about Mr. Inkin's work and impact.",
-      "generic_claims": "The recommendation letters and exhibits provide specific examples, statistics and explanations to substantiate the significance of Mr. Inkin's contributions rather than relying on generic claims.",
-      "weak_substantiation": "The petition includes relevant screenshots, data points, and third-party validations to support the claims made about Mr. Inkin's achievements and the importance of the organizations and programs he has been involved with.",
-      "unsupported_salary": "The salary information for Mr. Inkin's employment at Akvelon in Georgia is supported by an official employment contract, bank statements, and government tax records. It is compared against both the national IT salary from Forbes Georgia and the specific software developer salary data from Georgia's National Statistics Office for the exact time period.",
-      "inconsistent_field": "Mr. Inkin's work appears consistently focused on software development, specifically in the areas of PHP backend development and Flutter frontend development. His achievements and recognition are concentrated in this field."
+      "repetitive_language": "The petition does not appear to contain repetitive or boilerplate language in the recommendation letters. The letters come from different organizations and highlight specific contributions and achievements by Mr. Inkin.",
+      "generic_claims": "The recommendation letters and exhibits provide specific examples, metrics and explanations to substantiate the significance of Mr. Inkin's work and impact, rather than generic or vague claims. For example, the widespread adoption of his open-source contributions is supported by statistics from package repositories.",
+      "weak_substantiation": "The petition includes relevant screenshots, reports, and third-party sources to corroborate the claims made about Mr. Inkin's achievements and the stature of the associated organizations and awards. Links and citations are provided.",
+      "unsupported_salary": "Detailed salary information with supporting documentation from the employer and bank statements is provided for Mr. Inkin's most recent role at Akvelon. His salary is compared against government and industry salary data for the relevant time period and field, showing he earned 2-3 times the average.",
+      "inconsistent_field": "Mr. Inkin's work appears consistently focused on software development, particularly in the areas of PHP backend development and Flutter frontend development in recent years. His education, work history, awards, and contributions align with this field of expertise."
     }
   }
 }

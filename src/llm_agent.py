@@ -84,6 +84,7 @@ class RFEBOT:
         except Exception as e:
             pass
         return {"status": "couldn't parse the content"}
+    
     @staticmethod
     def Agentprompt(petitionContent: str) -> Dict:
         prompt1: str = f"""You are a USCIS Officer assigned to critically review an EB-1A petition. Your task is to extract the following components from the petition content:

@@ -1,6 +1,9 @@
 PyMuPDF
 python-docx
-langchain-groq
+python-dotenv
+python-multipart
+langchain-anthropic
 langchain
-fastapi
 black
+streamlit # for formating my code
+fastapi # for serving the agents
