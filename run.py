@@ -1,6 +1,9 @@
 from src.llm_agent import RFEBOT
+from utils import utils
 from docLoaders.petition_loaders import petitionLoaders
 from typing import TypedDict, Any, Dict, Optional
+import time
+
 
 
 class SelectedCriterion(TypedDict, total=False):
@@ -16,32 +19,33 @@ class SelectedCriterion(TypedDict, total=False):
     Criterion9Result: Optional[Dict[str, Any]]
     Criterion10Result: Optional[Dict[str, Any]]
     summary: Optional[Dict[str, Any]]
-
+    recognizable_components: Optional[Dict[str, Any]]
 
 def main(file_path: str) -> Dict[str, Any]:
     selected_criterion: SelectedCriterion = {}
+    petition_content: str = petitionLoaders.extract_text_from_file(file_path)
 
-    try:
-        petition_content: str = petitionLoaders.extract_text_from_file(file_path)
+    if not petition_content:
+        return {"error": "Couldn't extract text from the document"}
 
-        if not petition_content:
-            return {"error": "Couldn't extract text from the document"}
+    international_award: Dict[str, Any] = RFEBOT.AgentpromptInternationalAward(petition_content)
+    has_major_award = international_award.get("has_major_award")
 
-        international_award: Dict[str, Any] = RFEBOT.AgentpromptInternationalAward(
-            petition_content
-        )
-        has_major_award = international_award.get("has_major_award")
+    if isinstance(has_major_award, str):
+        has_major_award = has_major_award.lower() == "true"
+    elif isinstance(has_major_award, bool):
+        has_major_award = has_major_award
 
-        if isinstance(has_major_award, str) and has_major_award.lower() == "true":
-            selected_criterion["internationalAward"] = international_award
-            selected_criterion["summary"] = {
-                "qualification_path": "major_international_award",
-                "criteria_needed": 0,
-                "criteria_met": 1,
-                "status": "qualified",
-            }
-            return selected_criterion
+    selected_criterion["internationalAward"] = international_award
 
+    if has_major_award:
+        selected_criterion["summary"] = {
+            "qualification_path": "major_international_award",
+            "criteria_needed": 0,
+            "criteria_met": 1,
+            "status": "qualified"
+        }
+    else:
         criteria_results = []
         criteria_functions = [
             ("Criterion1Result", RFEBOT.AgenticCriterionPrompt1, "meets_criterion_1"),
@@ -53,11 +57,7 @@ def main(file_path: str) -> Dict[str, Any]:
             ("Criterion7Result", RFEBOT.AgenticCriterionPrompt7, "meets_criterion_7"),
             ("Criterion8Result", RFEBOT.AgenticCriterionPrompt8, "meets_criterion_8"),
             ("Criterion9Result", RFEBOT.AgenticCriterionPrompt9, "meets_criterion_9"),
-            (
-                "Criterion10Result",
-                RFEBOT.AgenticCriterionPrompt10,
-                "meets_criterion_10",
-            ),
+            ("Criterion10Result", RFEBOT.AgenticCriterionPrompt10, "meets_criterion_10")
         ]
 
         met_criteria_count = 0
@@ -65,7 +65,7 @@ def main(file_path: str) -> Dict[str, Any]:
 
         for criterion_name, criterion_function, criterion_key in criteria_functions:
             try:
-                criterion_result: Dict[str, Any] = criterion_function(petition_content)
+                criterion_result = criterion_function(petition_content)
                 selected_criterion[criterion_name] = criterion_result
                 processed_criteria.append(criterion_name)
 
@@ -73,24 +73,16 @@ def main(file_path: str) -> Dict[str, Any]:
                 if isinstance(meets, str):
                     meets = meets.lower() == "true"
                 elif isinstance(meets, bool):
-                    meets = meets is True
+                    meets = meets
 
                 if meets:
                     met_criteria_count += 1
                     criteria_results.append(criterion_name)
-
-            except AttributeError:
-                selected_criterion[criterion_name] = {
-                    "error": "Function not implemented"
-                }
-                processed_criteria.append(criterion_name)
             except Exception as e:
                 selected_criterion[criterion_name] = {"error": str(e)}
                 processed_criteria.append(criterion_name)
 
-        qualification_status = (
-            "qualified" if met_criteria_count >= 3 else "not_qualified"
-        )
+        qualification_status = "qualified" if met_criteria_count >= 3 else "not_qualified"
 
         selected_criterion["summary"] = {
             "qualification_path": "ten_criteria",
@@ -100,25 +92,22 @@ def main(file_path: str) -> Dict[str, Any]:
             "processed_criteria": processed_criteria,
             "total_criteria_checked": len(processed_criteria),
             "status": qualification_status,
-            "early_qualification": met_criteria_count >= 3
-            and len(processed_criteria) < 10,
+            "early_qualification": met_criteria_count >= 3 and len(processed_criteria) < 10
         }
-        background: dict = RFEBOT.Agentprompt(petition_content)
-        selected_criterion["recognizable_components"] = background
-        return selected_criterion
 
-    except FileNotFoundError:
-        return {"error": f"File not found: {file_path}"}
-    except Exception as e:
-        return {"error": f"An error occurred: {str(e)}"}
+    background = RFEBOT.Agentprompt(petition_content)
+    selected_criterion["recognizable_components"] = background
+    return selected_criterion
 
-import time
-start = time.time()
+# start = time.time()
 # result = main(file_path=r"C:\Users\miztu\Downloads\inkin.pdf")
-petition_content: str = petitionLoaders.extract_text_from_file(file_path=r"C:\Users\miztu\Downloads\inkin.pdf")
-result2 = RFEBOT.Agentprompt(petition_content)
-# RFEBOT.finalAgent(result)
+# utils.Criterionutils(result)
+# jsonSaver(result)
+# end = time.time()
+# print(f"The analysis took approximately {end - start:.2f} seconds to complete.")
+
+start = time.time()
+result = utils.JsonLoader(r"./result.json")
+utils.CriterionDocCreator(result)
 end = time.time()
-print(f"the analysis took approximately {end - start}secs to complete!")
-# print(result)
-print(result2)
+print(f"The analysis took approximately {end - start:.2f} seconds to complete.")
