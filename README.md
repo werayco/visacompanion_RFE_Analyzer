@@ -20,7 +20,7 @@ AGENT_TEMP =
 
 
 ```console
-docker build -d visacom:latest .
+docker build -t visacom:latest .
 
 ```
 - After the image, run the container using this command.
